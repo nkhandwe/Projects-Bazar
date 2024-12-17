@@ -36,7 +36,7 @@
                             <div class="owl-theme owl-carousel categories--slider mt-3">
                                 @foreach($categories as $key => $category)
                                     @if ($key<10)
-                                        <div class="text-center m-0 __cate-item w-100">
+                                        {{-- <div class="text-center m-0 __cate-item w-100">
                                             <a href="{{route('products',['category_id'=> $category['id'],'data_from'=>'category','page'=>1])}}">
                                                 <div class="__img mw-100 h-auto">
                                                     <img alt="{{ $category->name }}"
@@ -44,7 +44,7 @@
                                                 </div>
                                                 <p class="text-center small mt-2">{{Str::limit($category->name, 12)}}</p>
                                             </a>
-                                        </div>
+                                        </div> --}}
                                     @endif
                                 @endforeach
                             </div>
