@@ -3,7 +3,7 @@
         <div class="container">
             <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
                 <h1><strong>SHOP BY <span style="color: #5f3dc4;">AGE</span></strong></h1>
-                <h3 class="mb-5">STEAM-filled boxes of joy for 3-14 years</h3>
+                <span class="mb-5">STEAM-filled boxes of joy for 3-14 years</span>
             </div>
             <div class="row justify-content-center mt-5">
                 @foreach ($categories as $key => $category)
@@ -50,17 +50,16 @@
         font-size: 24px;
         font-weight: bold;
         margin: 0;
+
     }
 
     .cate_image {
         border-radius: 0 0 0px 0px;
         object-fit: cover;
         margin-top: -70px;
-        bottom: 0px !important;
+
+        bottom: 1px !important;
     }
-
-
-
 
     .text-break {
         word-wrap: break-word;
