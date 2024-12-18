@@ -37,15 +37,7 @@
 @endif
 
 <style>
-    /* .__cate-item {
-        border-radius: 50px 50px 0 0;
-        position: relative;
-        text-align: center;
-        height: 120px!important;
-        /* overflow-x: hidden; */
-    }
-
-    */ .__cate-item {
+    .__cate-item {
         padding: 10px;
         border-radius: 50px 50px 0 0;
         color: white;
