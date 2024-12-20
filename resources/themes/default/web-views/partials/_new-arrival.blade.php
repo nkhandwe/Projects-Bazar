@@ -93,7 +93,11 @@
                                    </div>
                                </div>
                            @else
-                               <p class="text-center mt-3">No products found in this category.</p>
+                               <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
+                                   <h1><strong>No products found <span style="color: #5f3dc4;">in this
+                                               category.</span></strong></h1>
+                                   <span class="mb-5">Please Check with another category!</span>
+                               </div>
                            @endif
                        </div>
                    @endforeach
