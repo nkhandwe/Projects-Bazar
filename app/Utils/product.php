@@ -88,14 +88,14 @@ if (!function_exists('getPriceRangeWithDiscount')) {
             if ($product->discount > 0) {
                 $amount = $productUnitPrice - getProductDiscount(product: $product, price: $productUnitPrice);
                 $productDiscountedPrice = setCurrencySymbol(amount: usdToDefaultCurrency(amount: $amount), currencyCode: getCurrencyCode());
-                return '<span class="discounted_unit_price fs-24 font-bold">' . $productDiscountedPrice . '</span>' . '<del class="total_unit_price align-middle text-muted fs-18 font-semibold">' . setCurrencySymbol(amount: usdToDefaultCurrency(amount: $productUnitPrice), currencyCode: getCurrencyCode()) . '</del>';
+                return '<del class="total_unit_price align-middle text-danger fs-18 font-semibold">' . setCurrencySymbol(amount: usdToDefaultCurrency(amount: $productUnitPrice), currencyCode: getCurrencyCode()) . '</del>' . '<span class="discounted_unit_price fs-24 font-bold">' . $productDiscountedPrice . '</span>';
             } else {
                 return '<span class="discounted_unit_price fs-24 font-bold">' . setCurrencySymbol(amount: usdToDefaultCurrency(amount: $productUnitPrice), currencyCode: getCurrencyCode()) . '</span>';
             }
         } else {
             if ($product->discount > 0) {
                 $productDiscountedPrice = webCurrencyConverter(amount: $productUnitPrice - getProductDiscount(product: $product, price: $productUnitPrice));
-                return '<span class="discounted_unit_price fs-24 font-bold">' . $productDiscountedPrice . '</span>' . '<del class="total_unit_price align-middle text-muted fs-18 font-semibold">' . webCurrencyConverter(amount: $productUnitPrice) . '</del>';
+                return  '<del class="total_unit_price align-middle text-danger fs-18 font-semibold">' . webCurrencyConverter(amount: $productUnitPrice) . '</del>' . '<span class="discounted_unit_price fs-24 font-bold">' . $productDiscountedPrice . '</span>';
             } else {
                 return '<span class="discounted_unit_price fs-24 font-bold">' . webCurrencyConverter(amount: $productUnitPrice) . '</span>';
             }
@@ -113,31 +113,31 @@ if (!function_exists('getRatingCount')) {
 if (!function_exists('units')) {
     function units(): array
     {
-        return ['kg', 'pc', 'gms', 'ltrs','pair','oz','lb'];
+        return ['kg', 'pc', 'gms', 'ltrs', 'pair', 'oz', 'lb'];
     }
 }
 if (!function_exists('getVendorProductsCount')) {
-    function getVendorProductsCount(string $type):int
+    function getVendorProductsCount(string $type): int
     {
-        $products = \Illuminate\Support\Facades\DB::table('products')->where(['added_by'=>'seller'])->get();
+        $products = \Illuminate\Support\Facades\DB::table('products')->where(['added_by' => 'seller'])->get();
         return match ($type) {
             'new-product' => $products->where('request_status', 0)->count(),
             'product-updated-request' => $products->whereNotNull('is_shipping_cost_updated')->where('is_shipping_cost_updated', 0)->count(),
             'approved' => $products->where('request_status', 1)->count(),
-            'denied' => $products->where('request_status', 2)->where('status' , 0)->count(),
+            'denied' => $products->where('request_status', 2)->where('status', 0)->count(),
         };
     }
 }
 if (!function_exists('getAdminProductsCount')) {
-    function getAdminProductsCount(string $type):int
+    function getAdminProductsCount(string $type): int
     {
-        $products = \Illuminate\Support\Facades\DB::table('products')->where(['added_by'=>'admin'])->get();
+        $products = \Illuminate\Support\Facades\DB::table('products')->where(['added_by' => 'admin'])->get();
         return match ($type) {
             'all' => $products->count(),
             'new-product' => $products->where('request_status', 0)->count(),
             'product-updated-request' => $products->whereNotNull('is_shipping_cost_updated')->where('is_shipping_cost_updated', 0)->count(),
             'approved' => $products->where('request_status', 1)->count(),
-            'denied' => $products->where('request_status', 2)->where('status' , 0)->count(),
+            'denied' => $products->where('request_status', 2)->where('status', 0)->count(),
         };
     }
 }
