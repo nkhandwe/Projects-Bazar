@@ -950,7 +950,7 @@
             <div class="pt-4 pb-1 container" >
                 <div class="container rtl mt-4">
                     <div class="text-center mt-5 mb-5" style="">
-                        <h1><strong>BRAND <span style="color: #5f3dc4;">NEW BOXES</span> OF JOY</strong></h1>
+                        <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
                         <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
                             don't want to miss out on these!</span>
                     </div>
