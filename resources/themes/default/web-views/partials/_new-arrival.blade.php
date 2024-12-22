@@ -25,21 +25,21 @@
            .nav-pills .nav-link.active {
                color: #fff !important;
                /* Active tab text color */
-               background-color: #5f3dc4;
+               background-color: var(--primary-clr);
                /* Active tab background color */
            }
 
            .nav-pills .nav-link:hover {
-               color: #5f3dc4;
+               color: var(--primary-clr);
                /* Hover text color */
-               background-color: #5f3dc4;
+               background-color: var(--primary-clr);
                /* Hover background color */
            }
        </style>
 
        <section class="interest-section">
            <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
-               <h1><strong>SHOP BY <span style="color: #5f3dc4;">INTEREST</span></strong></h1>
+               <h1><strong>SHOP BY <span class="text-primary">INTEREST</span></strong></h1>
                <span class="mb-5">A whole lotta fun & learning</span>
            </div>
 
@@ -93,7 +93,7 @@
                                </div>
                            @else
                                <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
-                                   <h1><strong>No products found <span style="color: #5f3dc4;">in this
+                                   <h1><strong>No products found <span class="text-primary">in this
                                                category.</span></strong></h1>
                                    <span class="mb-5">Please Check with another category!</span>
                                </div>
