@@ -121,7 +121,7 @@
             @if ($newArrivalProducts->count() > 0)
                 <div class="container rtl mt-4">
                     <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
-                        <h1><strong>New <span style="color: #5f3dc4;">Arrivals</span></strong></h1>
+                        <h1><strong>New <span class="text-primary">Arrivals</span></strong></h1>
                         <span class="mb-5">Our latest offerings</span>
                     </div>
                 </div>
