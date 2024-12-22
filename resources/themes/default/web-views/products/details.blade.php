@@ -208,7 +208,6 @@
                                         @endif
                                     </div>
                                 @endif
-
                                 <div class="mb-3">
                                     <span class="font-weight-normal text-accent d-flex align-items-end gap-2">
                                         {!! getPriceRangeWithDiscount(product: $product) !!}
@@ -464,8 +463,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div>
-                                        <div
-                                            class="px-4 pb-3 mb-3 mr-0 mr-md-2   __rounded-10 pt-3">
+                                        <div class="px-4 pb-3 mb-3 mr-0 mr-md-2   __rounded-10 pt-3">
                                             <ul class="nav nav-tabs nav--tabs d-flex justify-content-center mt-3"
                                                 role="tablist">
                                                 <li class="nav-item">
@@ -481,8 +479,8 @@
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link __inline-27" href="#additionalinfo" data-toggle="tab"
-                                                        role="tab">
+                                                    <a class="nav-link __inline-27" href="#additionalinfo"
+                                                        data-toggle="tab" role="tab">
                                                         {{ 'Additional Info' }}
                                                     </a>
                                                 </li>
@@ -706,36 +704,32 @@
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="additionalinfo" role="tabpanel">
-                                                        <div>
-                                                            <div
-                                                                class="table-responsive"
-                                                            >
-                                                                <table
-                                                                    class="table table-hover table-striped"
-                                                                >
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col">Sl</th>
-                                                                            <th scope="col">Fetures</th>
-                                                                            <th scope="col">Column 3</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr class="">
-                                                                            <td scope="row">R1C1</td>
-                                                                            <td>R1C2</td>
-                                                                            <td>R1C3</td>
-                                                                        </tr>
-                                                                        <tr class="">
-                                                                            <td scope="row">Item</td>
-                                                                            <td>Item</td>
-                                                                            <td>Item</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-
+                                                    <div>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Sl</th>
+                                                                        <th scope="col">Fetures</th>
+                                                                        <th scope="col">Column 3</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="">
+                                                                        <td scope="row">R1C1</td>
+                                                                        <td>R1C2</td>
+                                                                        <td>R1C3</td>
+                                                                    </tr>
+                                                                    <tr class="">
+                                                                        <td scope="row">Item</td>
+                                                                        <td>Item</td>
+                                                                        <td>Item</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
+
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -952,20 +946,65 @@
                 </div> --}}
             </div>
         </div>
-
-        <div class="bottom-sticky bg-white">
-            <div class="d-flex flex-column gap-1 py-2">
-                <div class="d-flex justify-content-center align-items-center fs-13">
-                    <div class="product-description-label text-dark font-bold"><strong
-                            class="text-capitalize">{{ translate('total_price') }}</strong> :
+        <div class="div" style="background-color: #fdf4f5">
+            <div class="pt-4 pb-1 container" >
+                <div class="container rtl mt-4">
+                    <div class="text-center mt-5 mb-5" style="">
+                        <h1><strong>BRAND <span style="color: #5f3dc4;">NEW BOXES</span> OF JOY</strong></h1>
+                        <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
+                            don't want to miss out on these!</span>
                     </div>
-                    &nbsp; <strong id="chosen_price_mobile" class="text-base"></strong>
-                    <small class="ml-2  font-regular">
-                        (<small>{{ translate('tax') }} : </small>
-                        <small id="set-tax-amount-mobile"></small>)
-                    </small>
                 </div>
-                <div class="d-flex gap-3 justify-content-center">
+            </div>
+            <div class="container mb-5 pb-5">
+                <div class="col-3">
+                    @include('web-views.partials._product-card-2', [
+                        'product' => $product,
+                        'decimal_point_settings' => $decimalPointSettings,
+                    ])
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-sticky bg-white ">
+        <div class="d-flex flex-column gap-1 py-2 container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap responsive-layout">
+                <div class="d-flex align-items-center gap-2 left-section">
+                    <img src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                        alt="" class="product-image">
+                    <div class="fs-13 price-details">
+                        <div class="product-description-label text-dark font-bold">
+                            <strong class="text-capitalize">{{ translate('total_price') }}</strong> :
+                        </div>
+                        <strong id="chosen_price_mobile" class="text-base"></strong>
+                        <small class="ml-2 font-regular">
+                            (<small>{{ translate('tax') }} : </small>
+                            <small id="set-tax-amount-mobile"></small>)
+                        </small>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 right-section">
+                    <div
+                        class="d-flex justify-content-center align-items-center quantity-box border rounded border-base web-text-primary">
+                        <span class="input-group-btn">
+                            <button class="btn btn-number __p-10 web-text-primary" type="button" data-type="minus"
+                                data-field="quantity" disabled="disabled">
+                                -
+                            </button>
+                        </span>
+                        <input type="text" name="quantity"
+                            class="form-control input-number text-center cart-qty-field __inline-29 border-0 "
+                            placeholder="{{ translate('1') }}" value="{{ $product->minimum_order_qty ?? 1 }}"
+                            data-producttype="{{ $product->product_type }}"
+                            min="{{ $product->minimum_order_qty ?? 1 }}"
+                            max="{{ $product['product_type'] == 'physical' ? $product->current_stock : 100 }}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-number __p-10 web-text-primary" type="button"
+                                data-producttype="{{ $product->product_type }}" data-type="plus" data-field="quantity">
+                                +
+                            </button>
+                        </span>
+                    </div>
                     @if (
                         ($product->added_by == 'seller' &&
                             ($sellerTemporaryClose ||
@@ -988,6 +1027,20 @@
                             type="button" disabled>
                             {{ translate('add_to_cart') }}
                         </button>
+                        <button type="button" data-product-id="{{ $product['id'] }}"
+                            class="btn __text-18px border d-none d-sm-block product-action-add-wishlist">
+                            <i class="fa {{ $wishlistStatus == 1 ? 'fa-heart' : 'fa-heart-o' }} wishlist_icon_{{ $product['id'] }} web-text-primary"
+                                aria-hidden="true"></i>
+                            <span
+                                class="fs-14 text-muted align-bottom countWishlist-{{ $product['id'] }}">{{ $countWishlist }}</span>
+                            <div class="wishlist-tooltip" x-placement="top">
+                                <div class="arrow"></div>
+                                <div class="inner">
+                                    <span class="add">{{ translate('added_to_wishlist') }}</span>
+                                    <span class="remove">{{ translate('removed_from_wishlist') }}</span>
+                                </div>
+                            </div>
+                        </button>
                     @else
                         <button
                             class="btn btn-secondary btn-sm btn-gap-{{ Session::get('direction') === 'rtl' ? 'left' : 'right' }} action-buy-now-this-product"
@@ -1001,13 +1054,76 @@
                             type="button">
                             <span class="string-limit">{{ translate('add_to_cart') }}</span>
                         </button>
+                        <button type="button" data-product-id="{{ $product['id'] }}"
+                            class="btn __text-18px  d-none d-sm-block product-action-add-wishlist">
+                            <i class="fa {{ $wishlistStatus == 1 ? 'fa-heart' : 'fa-heart-o' }} wishlist_icon_{{ $product['id'] }} web-text-primary"
+                                aria-hidden="true"></i>
+
+                            <div class="wishlist-tooltip" x-placement="top">
+                                <div class="arrow"></div>
+                                <div class="inner">
+                                    <span class="add">{{ translate('added_to_wishlist') }}</span>
+                                    <span class="remove">{{ translate('removed_from_wishlist') }}</span>
+                                </div>
+                            </div>
+                        </button>
                     @endif
                 </div>
             </div>
         </div>
+    </div>
+    <style>
+        /* Default Styles */
+        .responsive-layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
 
-        {{-- need to change design here --}}
-        {{-- <div class="pt-4 pb-3">
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-image {
+            height: 50px;
+            width: 50px;
+            object-fit: cover;
+        }
+
+        .right-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* For Screens 1200px and Below */
+        @media (max-width: 1200px) {
+            .responsive-layout {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .left-section,
+            .right-section {
+                flex: 1 1 100%;
+                justify-content: space-between;
+            }
+
+            .left-section {
+                flex-direction: row;
+            }
+
+            .right-section {
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+    </style>
+
+    {{-- need to change design here --}}
+    {{-- <div class="pt-4 pb-3">
                         <span class=" __text-16px font-bold text-capitalize">
                             @if (getWebConfig(name: 'business_mode') == 'multi')
                                 {{ translate('more_from_the_store')}}
@@ -1022,56 +1138,56 @@
                         @endforeach
                     </div>
                 </div> --}}
-        @if (count($relatedProducts) > 0)
-            <div class="container rtl text-align-direction">
-                <div class="card __card border-0">
-                    <div class="card-body">
-                        <div class="row flex-between">
-                            <div class="ms-1">
-                                <h4 class="text-capitalize font-bold fs-16">{{ translate('similar_products') }}</h4>
-                            </div>
-                            <div class="view_all d-flex justify-content-center align-items-center">
-                                <div>
-                                    @php($category = json_decode($product['category_ids']))
-                                    @if ($category)
-                                        <a class="text-capitalize view-all-text web-text-primary me-1"
-                                            href="{{ route('products', ['category_id' => $category[0]->id, 'data_from' => 'category', 'page' => 1]) }}">{{ translate('view_all') }}
-                                            <i
-                                                class="czi-arrow-{{ Session::get('direction') === 'rtl' ? 'left mr-1 ml-n1 mt-1 ' : 'right ml-1 mr-n1' }}"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
+    @if (count($relatedProducts) > 0)
+        <div class="container rtl text-align-direction">
+            <div class="card __card border-0">
+                <div class="card-body">
+                    <div class="row flex-between">
+                        <div class="ms-1">
+                            <h4 class="text-capitalize font-bold fs-16">{{ translate('similar_products') }}</h4>
                         </div>
-
-                        <div class="row g-3 mt-1">
-                            @foreach ($relatedProducts as $key => $relatedProduct)
-                                <div class="col-xl-2 col-sm-3 col-6">
-                                    @include('web-views.partials._inline-single-product-without-eye', [
-                                        'product' => $relatedProduct,
-                                        'decimal_point_settings' => $decimalPointSettings,
-                                    ])
-                                </div>
-                            @endforeach
+                        <div class="view_all d-flex justify-content-center align-items-center">
+                            <div>
+                                @php($category = json_decode($product['category_ids']))
+                                @if ($category)
+                                    <a class="text-capitalize view-all-text web-text-primary me-1"
+                                        href="{{ route('products', ['category_id' => $category[0]->id, 'data_from' => 'category', 'page' => 1]) }}">{{ translate('view_all') }}
+                                        <i
+                                            class="czi-arrow-{{ Session::get('direction') === 'rtl' ? 'left mr-1 ml-n1 mt-1 ' : 'right ml-1 mr-n1' }}"></i>
+                                    </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        @endif
 
-        <div class="modal fade rtl text-align-direction" id="show-modal-view" tabindex="-1" role="dialog"
-            aria-labelledby="show-modal-image" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body flex justify-content-center">
-                        <button class="btn btn-default __inline-33 dir-end-minus-7px" data-dismiss="modal">
-                            <i class="fa fa-close"></i>
-                        </button>
-                        <img class="element-center" id="attachment-view" src="" alt="">
+                    <div class="row g-3 mt-1">
+                        @foreach ($relatedProducts as $key => $relatedProduct)
+                            <div class="col-xl-2 col-sm-3 col-6">
+                                @include('web-views.partials._inline-single-product-without-eye', [
+                                    'product' => $relatedProduct,
+                                    'decimal_point_settings' => $decimalPointSettings,
+                                ])
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
+    @endif
+
+    <div class="modal fade rtl text-align-direction" id="show-modal-view" tabindex="-1" role="dialog"
+        aria-labelledby="show-modal-image" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body flex justify-content-center">
+                    <button class="btn btn-default __inline-33 dir-end-minus-7px" data-dismiss="modal">
+                        <i class="fa fa-close"></i>
+                    </button>
+                    <img class="element-center" id="attachment-view" src="" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
 
     </div>
 
