@@ -460,10 +460,12 @@
                             </div>
                         </div>
                     </div>
+
                     @if ($product->video_url != null)
                         <div>
                             <div class="text-center mt-5" style="">
-                                <h1><strong> <i class="tio-youtube"></i> <span class="text-primary">VIDEO</span> </strong></h1>
+                                <h1><strong> <i class="tio-youtube"></i> <span class="text-primary">VIDEO</span> </strong>
+                                </h1>
                                 <span class="mb-2 text-dark">Our newly launched toys are already taking the world by storm.
                                     You definitely
                                     don't want to miss out on these!</span>
@@ -987,7 +989,11 @@
                 </div> --}}
         </div>
     </div>
-    <div class="div" style="background-color: #fdf4f5">
+    <div class="div" style="background-color: #fdf4f5;
+           background-image: url({{ theme_asset(path: 'public/assets/front-end/img/icons/Awards-Sections_bg.png') }});
+           background-repeat: no-repeat;
+           /* background-position: center center; */
+           background-size: 100%;">
         <div class="pt-4 pb-1 container">
             <div class="container rtl mt-4">
                 <div class="text-center mt-5 mb-5" style="">
@@ -1063,6 +1069,37 @@
         });
     </script>
     </div>
+    {{-- <div class="__inline-23 mt-5 col-12"
+                        style="background-color: #fdf4f5;
+           background-image: url({{ theme_asset(path: 'public/assets/front-end/img/icons/Awards-Sections_bg.png') }});
+           background-repeat: no-repeat;
+           /* background-position: center center; */
+           background-size: 100%;">
+
+                        <div class=" pt-4 pb-1">
+                            <div class="container rtl mt-4">
+                                <div class="text-center mt-5 mb-5">
+                                    <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
+                                    <span class="mb-2">
+                                        Our newly launched toys are already taking the world by storm. You
+                                        definitely don't want to miss out on these!
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container mb-5 pb-5">
+
+        <div class="col-3">
+            @include('web-views.partials._product-card-2', [
+                'product' => $product,
+                'decimal_point_settings' => $decimalPointSettings,
+            ])
+        </div>
+
+                        </div>
+                    </div> --}}
+
     <div class="bottom-sticky bg-white ">
         <div class="d-flex flex-column gap-1 py-2 container">
             <div class="d-flex justify-content-between align-items-center flex-wrap responsive-layout">
