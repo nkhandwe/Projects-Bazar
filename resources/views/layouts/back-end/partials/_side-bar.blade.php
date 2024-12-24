@@ -454,6 +454,15 @@
                                         class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('product_gallery')}}</span>
                                 </a>
                             </li>
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/product-faqs/'.Product::PRODUCT_GALLERY[URI])?'active':''}}">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                   href="{{route('admin.product-faqs.add-new')}}"
+                                   title="{{'Product Faqs'}}">
+                                    <i class="tio-mic nav-icon"></i>
+                                    <span
+                                        class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{'Product Faqs'}}</span>
+                                </a>
+                            </li>
                         @endif
 
                         @if(Helpers::module_permission_check('promotion_management'))
