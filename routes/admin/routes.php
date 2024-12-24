@@ -167,7 +167,7 @@ use App\Http\Controllers\Admin\Deliveryman\DeliveryManCashCollectController;
 use App\Http\Controllers\Admin\Settings\StorageConnectionSettingsController;
 use App\Http\Controllers\Admin\Settings\VendorRegistrationSettingController;
 use App\Http\Controllers\Admin\Notification\PushNotificationSettingsController;
-
+use App\Http\Controllers\Admin\ProductFaqController;
 
 Route::controller(SharedController::class)->group(function () {
     Route::post('change-language', 'changeLanguage')->name('change-language');
@@ -274,7 +274,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             Route::get(Order::EXPORT_EXCEL[URI] . '/{status}', 'exportList')->name('export-excel');
             Route::get(Order::GENERATE_INVOICE[URI] . '/{id}', 'generateInvoice')->name('generate-invoice')->withoutMiddleware(['module:order_management']);
             Route::get(Order::VIEW[URI] . '/{id}', 'getView')->name('details');
-            Route::post(Order::UPDATE_ADDRESS[URI], 'updateAddress')->name('address-update');// update address from order details
+            Route::post(Order::UPDATE_ADDRESS[URI], 'updateAddress')->name('address-update'); // update address from order details
             Route::post(Order::UPDATE_DELIVERY_INFO[URI], 'updateDeliverInfo')->name('update-deliver-info');
             Route::get(Order::ADD_DELIVERY_MAN[URI] . '/{order_id}/{d_man_id}', 'addDeliveryMan')->name('add-delivery-man');
             Route::post(Order::UPDATE_AMOUNT_DATE[URI], 'updateAmountDate')->name('amount-date-update');
@@ -322,7 +322,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             Route::post(Category::DELETE[URI], 'delete')->name('delete');
             Route::post(Category::STATUS[URI], 'updateStatus')->name('status');
             Route::get(Category::EXPORT[URI], 'getExportList')->name('export');
-
         });
     });
 
@@ -399,7 +398,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                 Route::get(Customer::LOYALTY_EXPORT[URI], 'exportList')->name('export');
             });
         });
-
     });
 
     Route::group(['prefix' => 'report', 'as' => 'report.', 'middleware' => ['module:report']], function () {
@@ -705,7 +703,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                 Route::delete(EmergencyContact::DELETE[URI], 'delete')->name('destroy');
             });
         });
-
     });
 
     Route::group(['prefix' => 'most-demanded', 'as' => 'most-demanded.', 'middleware' => ['module:promotion_management']], function () {
@@ -746,7 +743,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                     Route::post(SystemSetup::LOGIN_URL_SETUP[URI], 'updateLoginSetupView');
                 });
             });
-
         });
     });
 
@@ -837,7 +833,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
 
                 Route::get(BusinessSettings::APP_SETTINGS[URI], 'getAppSettingsView')->name('app-settings');
                 Route::post(BusinessSettings::APP_SETTINGS[URI], 'updateAppSettings');
-
             });
 
             Route::controller(EnvironmentSettingsController::class)->group(function () {
@@ -861,7 +856,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                     Route::post(ThemeSetup::NOTIFY_VENDOR[URI], 'notifyAllTheVendors')->name('notify-all-the-vendors');
                 });
             });
-
         });
 
         Route::group(['prefix' => 'vendor-registration-settings', 'as' => 'vendor-registration-settings.', 'middleware' => ['module:system_settings']], function () {
@@ -989,7 +983,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                 Route::get(EmailTemplate::VIEW[URI] . '/{type}' . '/{tab}', 'getView')->name('view');
                 Route::post(EmailTemplate::UPDATE[URI] . '/{type}' . '/{tab}', 'update')->name('update');
                 Route::post(EmailTemplate::UPDATE_STATUS[URI] . '/{type}' . '/{tab}', 'updateStatus')->name('update-status');
-
             });
         });
 
@@ -1147,6 +1140,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             });
         });
     });
-
+    Route::group(['prefix' => 'product-faqs', 'as' => 'product-faqs.'], function () {
+        Route::controller(ProductFaqController::class)->group(function () {
+            Route::get('add-new', 'index')->name('add-new');
+            Route::post('store', 'store')->name('store');
+            Route::get('delete', 'delete')->name('delete');
+        });
+    });
 });
-
