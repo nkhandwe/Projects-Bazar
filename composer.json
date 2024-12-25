@@ -25,6 +25,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "iyzico/iyzipay-php": "^2.0",
+        "juspay/expresscheckout-php-sdk": "^2.0",
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.0",
         "laravel/sanctum": "^3.3",

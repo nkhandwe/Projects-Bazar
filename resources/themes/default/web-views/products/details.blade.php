@@ -480,7 +480,7 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="mt-4 rtl col-12 text-align-direction ">
+                        <div class="mt-4 rtl col-12  col-md-12 col-sm-12 text-align-direction ">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="text-center mt-5" style="">
@@ -491,7 +491,7 @@
                                     </div>
                                     @if ($product['details'])
                                         <div
-                                            class="text-body col-lg-12 col-md-12  fs-13 text-justify details-text-justify rich-editor-html-content">
+                                            class="text-body col-lg-12 col-md-12 col-sm-12 fs-13 text-justify details-text-justify rich-editor-html-content">
                                             {!! $product['details'] !!}
                                         </div>
                                     @endif

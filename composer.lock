@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c57ba7f158d693de4aa743e0ab690794",
+    "content-hash": "dbca1611c6b57e55e66dd846ee571b6e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2480,6 +2480,71 @@
                 "source": "https://github.com/iyzico/iyzipay-php/tree/v2.0.55"
             },
             "time": "2024-05-28T12:32:40+00:00"
+        },
+        {
+            "name": "juspay/expresscheckout-php-sdk",
+            "version": "v2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juspay/expresscheckout-php-sdk.git",
+                "reference": "3a33a1bbd0cfea09d853ffb921a89c6dd1a97b18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juspay/expresscheckout-php-sdk/zipball/3a33a1bbd0cfea09d853ffb921a89c6dd1a97b18",
+                "reference": "3a33a1bbd0cfea09d853ffb921a89c6dd1a97b18",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "monolog/monolog": "^3.0 || ^2.0 || ^1.0",
+                "php": ">=5.6.0",
+                "phpseclib/phpseclib": "^3.0"
+            },
+            "provide": {
+                "ext-sodium": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.* || ^9.0"
+            },
+            "suggest": {
+                "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Juspay\\": "lib",
+                    "Juspay\\JWT\\": "lib/JWT",
+                    "Juspay\\Model\\": "lib/Model",
+                    "Juspay\\Exception\\": "lib/Exception"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Juspay Support",
+                    "email": "support@juspay.in"
+                }
+            ],
+            "description": "Express Checkout SDK for PHP allows easy integration with Juspay's EC payments as a service platform",
+            "homepage": "https://www.juspay.in",
+            "keywords": [
+                "ExpressCheckout",
+                "api",
+                "juspay",
+                "payment gateway",
+                "payment processing"
+            ],
+            "support": {
+                "email": "support@juspay.in",
+                "issues": "https://github.com/juspay/expresscheckout-php-sdk/issues",
+                "source": "https://github.com/juspay/expresscheckout-php-sdk/tree/v2.0.4"
+            },
+            "time": "2024-09-02T06:45:20+00:00"
         },
         {
             "name": "laravel/framework",
