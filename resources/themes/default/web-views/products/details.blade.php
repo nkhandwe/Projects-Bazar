@@ -1022,7 +1022,7 @@
                         don't want to miss out on these!</span>
                 </div>
             </div>
-            @php($faqs = \App\Models\productFaq::all())
+            @php($faqs = \App\Models\ProductFaq::all())
             <div class="accordion" id="faqAccordion">
                 @foreach ($faqs as $index => $faq)
                     <div class="card">
