@@ -4,7 +4,7 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@300;400;500;600;700&display=swap");
 
 :root {
     --blue: #007bff;
@@ -34,8 +34,8 @@
     --breakpoint-md: 768px;
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1280px;
-    --font-family-sans-serif: "Open Sans", sans-serif;
-    --font-family-monospace: "Open Sans", sans-serif;
+    --font-family-sans-serif: "Baloo 2", sans-serif;
+    --font-family-monospace: "Baloo 2", sans-serif;
 }
 
 *,
