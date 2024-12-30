@@ -465,8 +465,8 @@
                                             </div>
                                         </div>
                                         <style>
-                                            .embed-responsive{
-                                                width: 70%!important;
+                                            .embed-responsive {
+                                                width: 70% !important;
                                             }
                                         </style>
                                     </div>
@@ -478,22 +478,23 @@
 
                     <div class="row">
                         @if ($product['details'])
-                        <div class="mt-4 rtl col-12  col-md-12 col-sm-12 text-align-direction ">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="text-center mt-5" style="">
-                                        <h1><strong>PRODUCT <span class="text-primary">OVERVIEW</span> </strong></h1>
-                                        <span class="mb-2">Our newly launched toys are already taking the world by storm.
-                                            You definitely
-                                            don't want to miss out on these!</span>
-                                    </div>
+                            <div class="mt-4 rtl col-12  col-md-12 col-sm-12 text-align-direction ">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="text-center mt-5" style="">
+                                            <h1><strong>PRODUCT <span class="text-primary">OVERVIEW</span> </strong></h1>
+                                            <span class="mb-2">Our newly launched toys are already taking the world by
+                                                storm.
+                                                You definitely
+                                                don't want to miss out on these!</span>
+                                        </div>
                                         <div
                                             class="text-body col-lg-12 col-md-12 col-sm-12 fs-13 text-justify details-text-justify rich-editor-html-content">
                                             {!! $product['details'] !!}
                                         </div>
                                     </div>
-                                    @endif
-                                {{-- <div>
+                        @endif
+                        {{-- <div>
                                     <div class="px-4 pb-3 mb-3 mr-0 mr-md-2   __rounded-10 pt-1">
                                         <ul class="nav nav-tabs nav--tabs d-flex justify-content-center mt-3"
                                             role="tablist">
@@ -773,15 +774,15 @@
                                         </div>
                                     </div>
                                 </div> --}}
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
             </div>
+        </div>
 
-            {{-- <div class="col-lg-3">
+    </div>
+
+    {{-- <div class="col-lg-3">
                     @php($companyReliability = getWebConfig('company_reliability'))
                     @if ($companyReliability != null)
                         <div class="product-details-shipping-details">
@@ -984,7 +985,7 @@
                         @endforeach
                     </div>
                 </div> --}}
-        </div>
+    </div>
     </div>
     <div class="div"
         style="background-color: #fdf4f5;
