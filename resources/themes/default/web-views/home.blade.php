@@ -255,11 +255,12 @@
             @include('web-views.partials._company-reliability')
         @endif --}}
     </div>
-
+    <span id="products-details-page-data" data-id="{{ $product['id'] }}"></span>
     <span id="direction-from-session" data-value="{{ session()->get('direction') }}"></span>
 @endsection
 
 @push('script')
+    <script src="{{ theme_asset(path: 'public/assets/front-end/js/product-details.js') }}"></script>
     <script src="{{ theme_asset(path: 'public/assets/front-end/js/owl.carousel.min.js') }}"></script>
     <script src="{{ theme_asset(path: 'public/assets/front-end/js/home.js') }}"></script>
 @endpush
