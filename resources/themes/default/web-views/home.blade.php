@@ -22,7 +22,7 @@
     @endpush
 
 @section('content')
-    <div class="__inline-61">
+    <div class="__inline-61" style="background: white;">
         @php($decimalPointSettings = !empty(getWebConfig(name: 'decimal_point_settings')) ? getWebConfig(name: 'decimal_point_settings') : 0)
 
         @include('web-views.partials._home-top-slider', ['main_banner' => $main_banner])
@@ -146,6 +146,43 @@
 
         </section>
 
+        <div class="container">
+            <div class="sf-hero position-relative">
+                <!-- Desktop Background -->
+                <div class="sf-hero__bg d-none d-md-block"
+                    style="background-image: url('//www.smartivity.in/cdn/shop/files/Why-Steam-Banner_Desktop.jpg?v=1683535475');">
+                </div>
+
+                <!-- Mobile Background -->
+                <div class="d-block d-md-none">
+                    <picture>
+                        <source
+                            srcset="//www.smartivity.in/cdn/shop/files/Why-Steam-Banner_Mobile_2.jpg?v=1683535509&amp;width=533"
+                            media="(max-width: 768px)">
+                        <source
+                            srcset="//www.smartivity.in/cdn/shop/files/Why-Steam-Banner_Mobile_2.jpg?v=1683535509&amp;width=720"
+                            media="(max-width: 1200px)">
+                        <img src="//www.smartivity.in/cdn/shop/files/Why-Steam-Banner_Mobile_2.jpg?v=1683535509&amp;width=1080"
+                            alt="STEAM Banner" class="img-fluid w-100" loading="lazy">
+                    </picture>
+                </div>
+            </div>
+        </div>
+        <style>
+            .sf-hero {
+                overflow: hidden;
+                width: 100%;
+                position: relative;
+            }
+
+            .sf-hero__bg {
+                background-size: cover;
+                background-position: center;
+                width: 100%;
+                padding-top: 42%;
+                /* Adjust to maintain aspect ratio */
+            }
+        </style>
         @include('web-views.partials._new-arrival')
 
 
