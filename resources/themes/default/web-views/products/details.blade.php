@@ -456,30 +456,28 @@
                                     </div>
 
                                 </form>
-
+                                @if ($product->video_url != null)
+                                    <div>
+                                        <div class="col-12 mb-4 mt-4">
+                                            <div class="embed-responsive embed-responsive-16by9">
+                                                <iframe class="embed-responsive-item" width="200" height="315"
+                                                    src="{{ $product->video_url }}" allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                        <style>
+                                            .embed-responsive{
+                                                width: 70%!important;
+                                            }
+                                        </style>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
 
-                    @if ($product->video_url != null)
-                        <div>
-                            <div class="text-center mt-5" style="">
-                                <h1><strong> <i class="tio-youtube"></i> <span class="text-primary">VIDEO</span> </strong>
-                                </h1>
-                                <span class="mb-2 text-dark">Our newly launched toys are already taking the world by storm.
-                                    You definitely
-                                    don't want to miss out on these!</span>
-                            </div>
 
-                            <div class="col-12 mb-4 mt-4">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" width="420" height="315"
-                                        src="{{ $product->video_url }}" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                     <div class="row">
+                        @if ($product['details'])
                         <div class="mt-4 rtl col-12  col-md-12 col-sm-12 text-align-direction ">
                             <div class="row">
                                 <div class="col-12">
@@ -489,13 +487,12 @@
                                             You definitely
                                             don't want to miss out on these!</span>
                                     </div>
-                                    @if ($product['details'])
                                         <div
                                             class="text-body col-lg-12 col-md-12 col-sm-12 fs-13 text-justify details-text-justify rich-editor-html-content">
                                             {!! $product['details'] !!}
                                         </div>
+                                    </div>
                                     @endif
-                                </div>
                                 {{-- <div>
                                     <div class="px-4 pb-3 mb-3 mr-0 mr-md-2   __rounded-10 pt-1">
                                         <ul class="nav nav-tabs nav--tabs d-flex justify-content-center mt-3"
@@ -989,7 +986,8 @@
                 </div> --}}
         </div>
     </div>
-    <div class="div" style="background-color: #fdf4f5;
+    <div class="div"
+        style="background-color: #fdf4f5;
            background-image: url({{ theme_asset(path: 'public/assets/front-end/img/icons/Awards-Sections_bg.png') }});
            background-repeat: no-repeat;
            /* background-position: center center; */
@@ -1272,7 +1270,7 @@
                         @endforeach
                     </div>
                 </div> --}}
-    @if (count($relatedProducts) > 0)
+    {{-- @if (count($relatedProducts) > 0)
         <div class="container rtl text-align-direction">
             <div class="card __card border-0">
                 <div class="card-body">
@@ -1307,7 +1305,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 
     <div class="modal fade rtl text-align-direction" id="show-modal-view" tabindex="-1" role="dialog"
         aria-labelledby="show-modal-image" aria-hidden="true">
