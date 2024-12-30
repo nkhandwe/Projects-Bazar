@@ -39,7 +39,7 @@
 
        <section class="interest-section">
            <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
-               <h1><strong>SHOP BY <span class="text-primary">SUBCATEGORY</span></strong></h1>
+               <h1><strong>SHOP BY <span class="text-primary">INTEREST</span></strong></h1>
                <span class="mb-5">A whole lotta fun & learning</span>
            </div>
            @php($subcategories = \App\Models\Category::where('parent_id', '!=', 0)->get())
