@@ -53,8 +53,9 @@
     }
 
     .__cate-item h2 {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
+        font-family: 'Baloo 2', sans-serif;
         margin: 0;
 
     }
