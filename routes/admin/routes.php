@@ -168,6 +168,7 @@ use App\Http\Controllers\Admin\Settings\StorageConnectionSettingsController;
 use App\Http\Controllers\Admin\Settings\VendorRegistrationSettingController;
 use App\Http\Controllers\Admin\Notification\PushNotificationSettingsController;
 use App\Http\Controllers\Admin\ProductFaqController;
+use App\Http\Controllers\Admin\VideoController;
 
 Route::controller(SharedController::class)->group(function () {
     Route::post('change-language', 'changeLanguage')->name('change-language');
@@ -1142,6 +1143,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
     });
     Route::group(['prefix' => 'product-faqs', 'as' => 'product-faqs.'], function () {
         Route::controller(ProductFaqController::class)->group(function () {
+            Route::get('add-new', 'index')->name('add-new');
+            Route::post('store', 'store')->name('store');
+            Route::get('delete', 'delete')->name('delete');
+        });
+    });
+    Route::group(['prefix' => 'product-videos', 'as' => 'product-videos.'], function () {
+        Route::controller(VideoController::class)->group(function () {
             Route::get('add-new', 'index')->name('add-new');
             Route::post('store', 'store')->name('store');
             Route::get('delete', 'delete')->name('delete');
