@@ -218,6 +218,7 @@ Route::group(['namespace' => 'Web', 'middleware' => ['maintenance_mode', 'guestC
         Route::get('account-delete/{id}', 'account_delete')->name('account-delete');
         Route::get('refer-earn', 'refer_earn')->name('refer-earn')->middleware('customer');
         Route::get('user-coupons', 'user_coupons')->name('user-coupons')->middleware('customer');
+        Route::get('video-watch/{order_id}', 'videoView')->name('videoView')->middleware('customer');
     });
 
     // Chatting start
