@@ -6,11 +6,12 @@
 <style>
     /* Custom styles for tabs */
     .nav-pills .nav-link {
-        color: #000 !important;
+        color: #555454 !important;
         background-color: white;
-        border: none;
+        border: 1px solid #e7e7e7;
         border-radius: 50px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        font-family: 'Baloo 2', sans-serif;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: color 0.3s, background-color 0.3s;
         margin: 0 10px;
         white-space: nowrap;
@@ -18,12 +19,13 @@
 
     .nav-pills .nav-link.active {
         color: #fff !important;
-        background-color: var(--primary-clr);
+        background-color: var(--web-primary);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .nav-pills .nav-link:hover {
-        color: var(--primary-clr);
-        background-color: var(--primary-clr);
+        color: var(--web-primary);
+        background-color: var(--web-primary);
     }
 
     /* Add horizontal scrolling for tabs on smaller devices */
