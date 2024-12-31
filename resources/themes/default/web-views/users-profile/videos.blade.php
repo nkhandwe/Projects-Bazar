@@ -15,7 +15,7 @@
                             <div class="col-md-12">
                                 @php
                                     $productNames = [];
-                                    $videos = [];
+                                    $productIds = [];
                                 @endphp
 
                                 @foreach ($order->details as $detailKey => $detail)
@@ -23,13 +23,15 @@
                                         $productDetails = isset($detail['product_details'])
                                             ? json_decode($detail['product_details'], true)
                                             : [];
-                                    @endphp
 
-                                    @if (is_array($productDetails) && isset($productDetails['name']))
-                                        @php
-                                            $productNames[] = $productDetails['name'];
-                                        @endphp
-                                    @endif
+                                        if (
+                                            is_array($productDetails) &&
+                                            isset($productDetails['name'], $productDetails['id'])
+                                        ) {
+                                            $productNames[$productDetails['id']] = $productDetails['name'];
+                                            $productIds[] = $productDetails['id'];
+                                        }
+                                    @endphp
                                 @endforeach
 
                                 @if (!empty($productNames))
@@ -37,119 +39,114 @@
                                         <h5 class="card-title">Select Product</h5>
                                         <select class="form-control" aria-label="Product Names" id="productSelect">
                                             <option value="">Select a product</option>
-                                            @foreach ($productNames as $productName)
-                                                <option value="{{ $productName }}">{{ $productName }}</option>
+                                            @foreach ($productNames as $id => $name)
+                                                <option value="{{ $id }}">{{ $name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                @else
-                                    <p class="text-muted">No product names available.</p>
-                                @endif
 
-                                @foreach ($order->details as $detailKey => $detail)
-                                    @php
-                                        $productDetails = isset($detail['product_details'])
-                                            ? json_decode($detail['product_details'], true)
-                                            : [];
-                                    @endphp
-
-                                    @if (is_array($productDetails) && isset($productDetails['name']))
+                                    @foreach ($productIds as $productId)
                                         @php
-                                            $productNames[] = $productDetails['name'];
-                                            $videos = \App\Models\ProductVideos::where(
-                                                'product_id',
-                                                $productDetails['id'] ?? null,
-                                            )->get();
+                                            $videos = \App\Models\ProductVideos::where('product_id', $productId)->get();
                                         @endphp
-                                    @endif
 
-                                    @if ($videos->isNotEmpty())
-                                        <section class="video-block" id="videoSection" style="display: none;">
-                                            <div class="container">
-                                                <div class="video-tab clearfix">
-                                                    <div class="row">
-                                                        <div class="col-md-7 pr-0">
-                                                            <div class="tab-content">
-                                                                @php
-                                                                    $videos = $videos->sortBy('position'); // Ensure videos are sorted by position
-                                                                    $firstVideo = $videos->first(); // Get the first video for the active tab
-                                                                @endphp
+                                        <section class="video-block product-videos-{{ $productId }}"
+                                            style="display: none;">
+                                            @if ($videos->isNotEmpty())
+                                                <div class="container">
+                                                    <div class="video-tab clearfix">
+                                                        <div class="row">
+                                                            <div class="col-md-7 pr-0">
+                                                                <div class="tab-content">
+                                                                    @php
+                                                                        $videos = $videos->sortBy('position');
+                                                                        $firstVideo = $videos->first();
+                                                                    @endphp
 
-                                                                @if ($firstVideo)
-                                                                    <div class="tab-pane fade show active"
-                                                                        id="videoTab{{ $firstVideo->id }}">
-                                                                        <a class="play-icon" href="javascript:void(0)"
-                                                                            data-video="https://player.vimeo.com/video/{{ $firstVideo->video_url }}?autoplay=1">
-                                                                            <img class="play-button"
-                                                                                src="https://user-images.githubusercontent.com/16266381/60864229-d403b780-a244-11e9-909a-a8a01b6e1d50.png"
-                                                                                alt="play-button">
-                                                                            <div class="post-thumbnail">
-                                                                                <img class="img-responsive"
-                                                                                    src="{{ URL::to('storage/app/public/' . urldecode($firstVideo->thumbnail)) }}"
-                                                                                    alt="post-thumbnail" />
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
-                                                                @endif
-
-                                                                @foreach ($videos as $index => $video)
-                                                                    @if ($index > 0)
-                                                                        <div class="tab-pane fade"
-                                                                            id="videoTab{{ $video->id }}">
+                                                                    @if ($firstVideo)
+                                                                        <div class="tab-pane fade show active"
+                                                                            id="videoTab{{ $firstVideo->id }}">
                                                                             <a class="play-icon" href="javascript:void(0)"
-                                                                                data-video="https://player.vimeo.com/video/{{ $video->video_url }}?autoplay=1">
+                                                                                data-video="https://player.vimeo.com/video/{{ $firstVideo->video_url }}?autoplay=1">
                                                                                 <img class="play-button"
                                                                                     src="https://user-images.githubusercontent.com/16266381/60864229-d403b780-a244-11e9-909a-a8a01b6e1d50.png"
                                                                                     alt="play-button">
                                                                                 <div class="post-thumbnail">
                                                                                     <img class="img-responsive"
-                                                                                        src="{{ URL::to('storage/app/public/' . urldecode($video->thumbnail)) }}"
+                                                                                        src="{{ URL::to('storage/app/public/' . urldecode($firstVideo->thumbnail)) }}"
                                                                                         alt="post-thumbnail" />
                                                                                 </div>
                                                                             </a>
                                                                         </div>
                                                                     @endif
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="col-md-5 pl-0">
-                                                            <ul class="nav nav-tabs"
-                                                                style="max-height: 400px; overflow-y: auto!important;">
-                                                                @foreach ($videos as $index => $video)
-                                                                    <li class="nav-item">
-                                                                        <a href="#videoTab{{ $video->id }}"
-                                                                            class="nav-link {{ $index === 0 ? 'active' : '' }}"
-                                                                            data-toggle="tab">
-                                                                            <div class="post-thumbnail">
-                                                                                <img class="img-responsive"
-                                                                                    src="{{ URL::to('storage/app/public/' . urldecode($video->thumbnail)) }}"
-                                                                                    alt="{{ $video->title }}" />
+                                                                    @foreach ($videos as $index => $video)
+                                                                        @if ($index > 0)
+                                                                            <div class="tab-pane fade"
+                                                                                id="videoTab{{ $video->id }}">
+                                                                                <a class="play-icon"
+                                                                                    href="javascript:void(0)"
+                                                                                    data-video="https://player.vimeo.com/video/{{ $video->video_url }}?autoplay=1">
+                                                                                    <img class="play-button"
+                                                                                        src="https://user-images.githubusercontent.com/16266381/60864229-d403b780-a244-11e9-909a-a8a01b6e1d50.png"
+                                                                                        alt="play-button">
+                                                                                    <div class="post-thumbnail">
+                                                                                        <img class="img-responsive"
+                                                                                            src="{{ URL::to('storage/app/public/' . urldecode($video->thumbnail)) }}"
+                                                                                            alt="post-thumbnail" />
+                                                                                    </div>
+                                                                                </a>
                                                                             </div>
-                                                                            <div class="video-details">
-                                                                                <span
-                                                                                    class="video-title text-dark">{{ $video->title }}</span>
-                                                                                <span
-                                                                                    class="video-duration text-dark">Duration:
-                                                                                    {{ $video->duration }}</span>
-                                                                            </div>
-                                                                        </a>
-                                                                    </li>
-                                                                    <hr />
-                                                                @endforeach
-                                                            </ul>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-5 pl-0">
+                                                                <ul class="nav nav-tabs"
+                                                                    style="max-height: 400px; overflow-y: auto!important;">
+                                                                    @foreach ($videos as $index => $video)
+                                                                        <li class="nav-item">
+                                                                            <a href="#videoTab{{ $video->id }}"
+                                                                                class="nav-link {{ $index === 0 ? 'active' : '' }}"
+                                                                                data-toggle="tab">
+                                                                                <div class="post-thumbnail">
+                                                                                    <img class="img-responsive"
+                                                                                        src="{{ URL::to('storage/app/public/' . urldecode($video->thumbnail)) }}"
+                                                                                        alt="{{ $video->title }}" />
+                                                                                </div>
+                                                                                <div class="video-details">
+                                                                                    <span
+                                                                                        class="video-title text-dark">{{ $video->title }}</span>
+                                                                                    <span
+                                                                                        class="video-duration text-dark">Duration:
+                                                                                        {{ $video->duration }}</span>
+                                                                                </div>
+                                                                            </a>
+                                                                        </li>
+                                                                        <hr />
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @else
+                                                <div class="container">
+                                                    <div class="alert alert-info text-center">
+                                                        No tutorial videos available for this product.
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </section>
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <p class="text-muted">No product names available.</p>
+                                @endif
                             </div>
                         @else
                             <p class="text-muted">No order details available.</p>
                         @endif
-
                     </div>
                 </div>
             </section>
@@ -287,6 +284,17 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#productSelect').change(function() {
+                var productId = $(this).val();
+                $('.video-block').hide();
+                if (productId) {
+                    $('.product-videos-' + productId).show();
+                }
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             // Hide video section until a product is selected
