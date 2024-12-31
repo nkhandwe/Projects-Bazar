@@ -30,6 +30,7 @@ return [
     'user_inbox_message' => 'web-views.users-profile.inbox.messages',
     'refer_earn' => 'web-views.users-profile.refer-earn',
     'user_coupons' => 'web-views.users-profile.coupons',
+    'videos' => 'web-views.users-profile.videos',
     'tracking-page' => 'web-views.order.tracking-page',
     'track_order' => 'web-views.order.tracking',
     'account_compare_list' => '',
