@@ -66,7 +66,7 @@
                 class="btn btn-primary w-100 element-center btn-gap-{{ Session::get('direction') === 'rtl' ? 'left' : 'right' }} btn-add-to-cart"
                 type="button" data-update-text="{{ translate('update_cart') }}"
                 data-add-text="{{ translate('add_to_cart') }}" style="border-radius: 25px;">
-                <span class="string-limit">{{ translate('add_to_cart') }}</span>
+                <span class="string-limit">{{ 'View Details' }}</span>
             </button>
         </div>
     </div>
