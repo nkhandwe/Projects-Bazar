@@ -325,10 +325,10 @@
                             <a class="nav-link" href="{{ route('home') }}">{{ translate('home') }}</a>
                         </li>
 
-                        @if (getWebConfig(name: 'product_brand'))
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#"
-                                    data-toggle="dropdown">{{ 'Shop By Age' }}</a>
+                                    data-toggle="dropdown">{{ 'Shop By Age' }} <i class="fa fa-chevron-down"></i></a>
                                 <ul
                                     class="text-align-direction dropdown-menu __dropdown-menu-sizing dropdown-menu-{{ Session::get('direction') === 'rtl' ? 'right' : 'left' }} scroll-bar">
                                     @php($brandIndex = 0)
@@ -355,7 +355,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        @endif
+
                         @php($discount_product = App\Models\Product::with(['reviews'])->active()->where('discount', '!=', 0)->count())
                         @if ($discount_product > 0)
                             <li class="nav-item dropdown {{ request()->is('/') ? 'active' : '' }}">
@@ -368,7 +368,7 @@
                         @if (getWebConfig(name: 'product_brand'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#"
-                                    data-toggle="dropdown">{{ 'Science & Activity Kits' }}</a>
+                                    data-toggle="dropdown">{{ 'Science & Activity Kits' }} <i class="fa fa-chevron-down"></i></a>
                         @php($categories = \App\Models\Category::where('parent_id', '!=', 0)->get())
                                 <ul
                                     class="text-align-direction dropdown-menu __dropdown-menu-sizing dropdown-menu-{{ Session::get('direction') === 'rtl' ? 'right' : 'left' }} scroll-bar">
@@ -398,10 +398,10 @@
                             </li>
                         @endif
 
-                        @if (getWebConfig(name: 'product_brand'))
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#"
-                                    data-toggle="dropdown">{{ 'More' }}</a>
+                                    data-toggle="dropdown">{{ 'More' }} <i class="fa fa-chevron-down"></i></a>
                                 <ul
                                     class="text-align-direction dropdown-menu __dropdown-menu-sizing dropdown-menu-{{ Session::get('direction') === 'rtl' ? 'right' : 'left' }} scroll-bar">
                                     <li class="__inline-17">
@@ -447,25 +447,9 @@
                                                 </a>
                                             </li>
                                         @endif
-
-                                    {{-- @foreach ($categories as $brand)
-                                        @php($brandIndex++)
-                                        @if ($brandIndex < 10)
-                                            <li class="__inline-17">
-                                                <div>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('products', ['category_id' => $brand['id'], 'data_from' => 'category', 'page' => 1]) }}">
-                                                        {{ $brand['name'] }}
-                                                    </a>
-                                                </div>
-
-                                            </li>
-                                        @endif
-                                    @endforeach --}}
-
                                 </ul>
                             </li>
-                        @endif
+
                         {{-- @if ($web_config['digital_product_setting'] && count($web_config['publishing_houses']) == 1)
                             <li class="nav-item dropdown d-none d-md-block {{ request()->is('/') ? 'active' : '' }}">
                                 <a class="nav-link"
