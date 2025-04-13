@@ -288,11 +288,11 @@
             transition: transform 0.3s ease;
         }
 
-        #faqAccordion .collapsed .toggle-icon.tio-plus {
+        #faqAccordion .collapsed .toggle-icon.tio-add {
             transform: rotate(0deg);
         }
 
-        #faqAccordion .toggle-icon.tio-minus {
+        #faqAccordion .toggle-icon.tio-remove {
             transform: rotate(180deg);
         }
     </style>
@@ -887,42 +887,140 @@
         </div>
     </div>
 
-    <!-- FAQ Section -->
-    <div class="mb-5">
-        <div class="pt-4 pb-1 container">
-            <div class="container rtl mt-4">
-                <div class="text-center mt-5 mb-5">
-                    <h1><strong><i class="tio-help"></i> FAQ's</h1>
-                    <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
-                        don't want to miss out on these!</span>
-                </div>
-            </div>
-            @php($faqs = \App\Models\ProductFaq::all())
-            <div class="accordion" id="faqAccordion">
-                @foreach ($faqs as $index => $faq)
-                    <div class="card">
-                        <div class="card-header" id="heading{{ $index }}">
-                            <h2 class="mb-0 d-flex align-items-center justify-content-between">
-                                <button class="btn btn-link {{ $index == 0 ? '' : 'collapsed' }} text-dark"
-                                    type="button" data-toggle="collapse" data-target="#collapse{{ $index }}"
-                                    aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
-                                    aria-controls="collapse{{ $index }}">
-                                    {{ $faq['question'] }}
-                                </button>
-                                <i class="icon tio {{ $index == 0 ? 'tio-minus' : 'tio-plus' }} toggle-icon"></i>
-                            </h2>
-                        </div>
-                        <div id="collapse{{ $index }}" class="collapse {{ $index == 0 ? 'show' : '' }}"
-                            aria-labelledby="heading{{ $index }}" data-parent="#faqAccordion">
-                            <div class="card-body text-dark">
-                                {{ $faq['answer'] }}
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+<!-- FAQ Section -->
+<div class="mb-5">
+    <div class="pt-4 pb-1 container">
+        <div class="container rtl mt-4">
+            <div class="text-center mt-5 mb-5">
+                <h1 class="d-flex align-items-center justify-content-center gap-2">
+                    <i class="tio-help"></i> <strong>FAQ<span class="text-primary">'s</span></strong>
+                </h1>
+                <h4 class="mb-2">Our newly launched toys are already taking the world by storm. You definitely don't want to miss out on these!</h4>
             </div>
         </div>
+        @php($faqs = \App\Models\ProductFaq::all())
+        <div class="accordion custom-accordion" id="faqAccordion">
+            @foreach ($faqs as $index => $faq)
+                <div class="card border-0 mb-3">
+                    <div class="card-header bg-white" id="heading{{ $index }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link w-100 text-left text-dark d-flex align-items-center justify-content-between py-3 {{ $index == 0 ? '' : 'collapsed' }}"
+                                type="button" data-toggle="collapse" data-target="#collapse{{ $index }}"
+                                aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
+                                aria-controls="collapse{{ $index }}">
+                                <span class="faq-question">{{ $faq['question'] }}</span>
+                                <i class="icon tio {{ $index == 0 ? 'tio-remove' : 'tio-add' }} toggle-icon"></i>
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapse{{ $index }}" class="collapse {{ $index == 0 ? 'show' : '' }}"
+                        aria-labelledby="heading{{ $index }}" data-parent="#faqAccordion">
+                        <div class="card-body pb-4 pt-1">
+                            {{ $faq['answer'] }}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
+</div>
+
+<style>
+/* Modern FAQ Styling */
+.custom-accordion .card {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.custom-accordion .card-header {
+    border-bottom: none;
+    padding: 0;
+    background-color: #fff;
+}
+
+.custom-accordion .btn-link {
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 15px 20px;
+}
+
+.custom-accordion .btn-link:hover {
+    text-decoration: none;
+    color: var(--web-primary);
+}
+
+.custom-accordion .btn-link.collapsed {
+    color: #333;
+}
+
+.custom-accordion .toggle-icon {
+    color: var(--web-primary);
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.custom-accordion .collapsed .toggle-icon.tio-add {
+    transform: rotate(0deg);
+}
+
+.custom-accordion .toggle-icon.tio-remove {
+    transform: rotate(0deg);
+}
+
+.custom-accordion .card-body {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 0 20px 20px 20px;
+}
+
+.custom-accordion .faq-question {
+    color: #333;
+    font-weight: 500;
+}
+
+.custom-accordion .btn-link:not(.collapsed) .faq-question {
+    color: var(--web-primary);
+    font-weight: 600;
+}
+
+/* Make heading icon look better */
+.tio-help-circle {
+    color: var(--web-primary);
+    font-size: 28px;
+    margin-right: 10px;
+}
+
+/* Hover effect for cards */
+.custom-accordion .card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+</style>
+
+<script>
+    $(document).ready(function() {
+        // Add smooth toggle animation for FAQ accordions
+        $('.custom-accordion .btn-link').on('click', function() {
+            // Toggle the icon
+            if($(this).hasClass('collapsed')) {
+                $(this).find('.toggle-icon').removeClass('tio-add').addClass('tio-remove');
+            } else {
+                $(this).find('.toggle-icon').removeClass('tio-remove').addClass('tio-add');
+            }
+            
+            // Smooth animation for siblings
+            $('.custom-accordion .btn-link').not(this).addClass('collapsed');
+            $('.custom-accordion .btn-link').not(this).find('.toggle-icon').removeClass('tio-remove').addClass('tio-add');
+        });
+    });
+</script>
 
     <!-- Bottom Sticky Bar -->
     <div class="bottom-sticky bg-white">
