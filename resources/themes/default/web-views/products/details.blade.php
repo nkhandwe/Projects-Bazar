@@ -834,13 +834,13 @@
                                     <div class="col-12">
                                         <div class="text-center mt-5">
                                             <h1><strong>PRODUCT <span class="text-primary">OVERVIEW</span> </strong></h1>
-                                            <span class="mb-2">Our newly launched toys are already taking the world by
+                                            <h4 class="mb-5 fs-3">Our newly launched toys are already taking the world by
                                                 storm.
                                                 You definitely
-                                                don't want to miss out on these!</span>
+                                                don't want to miss out on these!</h4>
                                         </div>
                                         <div
-                                            class="text-body col-lg-12 col-md-12 col-sm-12 fs-13 text-justify details-text-justify rich-editor-html-content">
+                                            class="text-body mb-5 col-lg-12 col-md-12 col-sm-12 fs-13 text-justify details-text-justify rich-editor-html-content">
                                             {!! $product['details'] !!}
                                         </div>
                                     </div>
@@ -859,8 +859,8 @@
         <div class="container">
             <div class="text-center mb-5">
                 <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
-                <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
-                    don't want to miss out on these!</span>
+                <h4 class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
+                    don't want to miss out on these!</h4>
             </div>
 
             <!-- Product card container -->
