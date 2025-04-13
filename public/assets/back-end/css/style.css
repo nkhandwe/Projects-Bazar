@@ -310,6 +310,7 @@ aside li .nav-link > span:not(:first-child) {
 
 .dropdown-item {
     padding: 0.75rem 1.5rem;
+    font-size:20px!important;
 }
 
 .nav-subtitle {
@@ -2445,6 +2446,7 @@ select {
 
 .__inline-9 .widget-list-link {
     color: white !important;
+    font-size: 20px !important;
 }
 
 .__inline-9 .widget-list-link:hover {

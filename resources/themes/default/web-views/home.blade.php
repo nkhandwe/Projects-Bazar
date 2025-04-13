@@ -27,9 +27,9 @@
 
         @include('web-views.partials._home-top-slider', ['main_banner' => $main_banner])
 
-        @if ($flashDeal['flashDeal'] && $flashDeal['flashDealProducts'] && count($flashDeal['flashDealProducts']) > 0)
+        {{-- @if ($flashDeal['flashDeal'] && $flashDeal['flashDealProducts'] && count($flashDeal['flashDealProducts']) > 0)
             @include('web-views.partials._flash-deal', ['decimal_point_settings' => $decimalPointSettings])
-        @endif
+        @endif --}}
 
         @if ($featuredProductsList->count() > 0)
             <div class="container py-4 rtl px-0 px-md-3">
@@ -72,7 +72,7 @@
         @endif
 
         @include('web-views.partials._category-section-home')
-
+        @include('web-views.partials._new-arrival')
         {{-- @if ($web_config['featured_deals'] && count($web_config['featured_deals']) > 0)
             <section class="featured_deal">
                 <div class="container">
@@ -116,35 +116,7 @@
 
         {{-- @include('web-views.partials._deal-of-the-day', ['decimal_point_settings'=>$decimalPointSettings]) --}}
 
-        <section class="new-arrival-section">
-
-            @if ($newArrivalProducts->count() > 0)
-                <div class="container rtl mt-4">
-                    <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
-                        <h1><strong>NEW <span class="text-primary">ARRIVALS</span></strong></h1>
-                        <span class="mb-5">Our latest offerings</span>
-                    </div>
-                </div>
-                <div class="container rtl mb-3 overflow-hidden">
-                    <div class="py-2">
-                        <div class="new_arrival_product">
-                            <div class="carousel-wrap">
-                                <div class="owl-carousel owl-theme new-arrivals-product">
-                                    @foreach ($newArrivalProducts as $key => $product)
-                                        @include('web-views.partials._product-card-2', [
-                                            'product' => $product,
-                                            'decimal_point_settings' => $decimalPointSettings,
-                                        ])
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-
-        </section>
+       
 
         <div class="container">
             <div class="sf-hero position-relative">
@@ -183,7 +155,35 @@
                 /* Adjust to maintain aspect ratio */
             }
         </style>
-        @include('web-views.partials._new-arrival')
+       <section class="new-arrival-section">
+
+            @if ($newArrivalProducts->count() > 0)
+                <div class="container rtl mt-4">
+                    <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
+                        <h1><strong>NEW <span class="text-primary">ARRIVALS</span></strong></h1>
+                        <span class="mb-5">Our latest offerings</span>
+                    </div>
+                </div>
+                <div class="container rtl mb-3 overflow-hidden">
+                    <div class="py-2">
+                        <div class="new_arrival_product">
+                            <div class="carousel-wrap">
+                                <div class="owl-carousel owl-theme new-arrivals-product">
+                                    @foreach ($newArrivalProducts as $key => $product)
+                                        @include('web-views.partials._product-card-2', [
+                                            'product' => $product,
+                                            'decimal_point_settings' => $decimalPointSettings,
+                                        ])
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+
+        </section>
 
 
 

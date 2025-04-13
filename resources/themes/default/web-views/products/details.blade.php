@@ -3,11 +3,82 @@
 @section('title', $product['name'])
 
 @push('css_or_js')
-    @include(VIEW_FILE_NAMES['product_seo_meta_content_partials'], [
-        'metaContentData' => $product?->seoInfo,
-        'product' => $product,
-    ])
-    <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/product-details.css') }}" />
+    <!-- Additional styles for product thumbnails on mobile and tablet -->
+    <style>
+        /* Default desktop vertical thumbnails */
+        .product-thumbs-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-preview-thumb {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #e2e2e2;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-preview-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Mobile and tablet view (less than 992px) */
+        @media (max-width: 991px) {
+            /* Hide the left column thumbnails */
+            .product-thumbs-col {
+                display: none;
+            }
+            
+            /* Create new horizontal thumbnail row above main image */
+            .mobile-thumbs-row {
+                display: flex;
+                width: 100%;
+                overflow-x: auto;
+                margin-bottom: 15px;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            
+            .mobile-thumbs-row::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Edge */
+            }
+            
+            .mobile-thumbs-row .product-preview-thumb {
+                flex: 0 0 auto;
+                width: 70px;
+                height: 70px;
+                margin-right: 10px;
+                margin-bottom: 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            
+            .mobile-thumbs-row .product-preview-thumb.active {
+                border: 2px solid var(--web-primary);
+            }
+            
+            /* Adjust main image container */
+            .product-main-col {
+                width: 100%;
+            }
+        }
+        
+        /* Small mobile view adjustments */
+        @media (max-width: 576px) {
+            .mobile-thumbs-row .product-preview-thumb {
+                width: 60px;
+                height: 60px;
+                margin-right: 8px;
+            }
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -15,59 +86,120 @@
         <div class="container mt-4 rtl text-align-direction">
             <div class="row {{ Session::get('direction') === 'rtl' ? '__dir-rtl' : '' }}">
                 <div class="col-lg-12 col-12">
-
                     <?php $guestCheckout = getWebConfig(name: 'guest_checkout'); ?>
                     <div class="row">
-                        <div class="col-lg-1 col-md-1 col-1">
+                        <!-- Desktop Thumbnails Column (hidden on mobile/tablet) -->
+                        <div class="col-lg-1 col-md-1 col-1 product-thumbs-col">
                             <div class="cz">
                                 <div class="table-responsive __max-h-515px" data-simplebar>
-                                    <div class="d-flex">
-                                        <div id="sync2" class="owl-carousel owl-theme product-thumb-slider">
-                                            @if ($product->images != null && json_decode($product->images) > 0)
-                                                @if (json_decode($product->colors) && count($product->color_images_full_url) > 0)
-                                                    @foreach ($product->color_images_full_url as $key => $photo)
-                                                        @if ($photo['color'] != null)
-                                                            <div class="">
-                                                                <a class="product-preview-thumb color-variants-preview-box-{{ $photo['color'] }} {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
-                                                                    id="preview-img{{ $photo['color'] }}"
-                                                                    href="#image{{ $photo['color'] }}">
-                                                                    <img alt="{{ translate('product') }}"
-                                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
-                                                                </a>
-                                                            </div>
-                                                        @else
-                                                            <div class="">
-                                                                <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
-                                                                    id="preview-img{{ $key }}"
-                                                                    href="#image{{ $key }}">
-                                                                    <img alt="{{ translate('product') }}"
-                                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
-                                                                </a>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    @foreach ($product->images_full_url as $key => $photo)
-                                                        <div class="">
-                                                            <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
-                                                                id="preview-img{{ $key }}"
-                                                                href="#image{{ $key }}">
-                                                                <img alt="{{ translate('product') }}"
-                                                                    src="{{ getStorageImages(path: $photo, type: 'product') }}">
-                                                            </a>
-                                                        </div>
-                                                    @endforeach
-                                                @endif
+                                    <div class="product-thumbs-wrapper">
+                                        @if ($product->images != null && json_decode($product->images) > 0)
+                                            @if (json_decode($product->colors) && count($product->color_images_full_url) > 0)
+                                                @foreach ($product->color_images_full_url as $key => $photo)
+                                                    @if ($photo['color'] != null)
+                                                        <a class="product-preview-thumb color-variants-preview-box-{{ $photo['color'] }} {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                            id="preview-img{{ $photo['color'] }}"
+                                                            href="#image{{ $photo['color'] }}">
+                                                            <img alt="{{ translate('product') }}"
+                                                                src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                        </a>
+                                                    @else
+                                                        <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                            id="preview-img{{ $key }}"
+                                                            href="#image{{ $key }}">
+                                                            <img alt="{{ translate('product') }}"
+                                                                src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                @foreach ($product->images_full_url as $key => $photo)
+                                                    <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                        id="preview-img{{ $key }}"
+                                                        href="#image{{ $key }}">
+                                                        <img alt="{{ translate('product') }}"
+                                                            src="{{ getStorageImages(path: $photo, type: 'product') }}">
+                                                    </a>
+                                                @endforeach
                                             @endif
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-4 col-12">
+                        <div class="col-lg-5 col-md-12 col-12 product-main-col">
+                            <!-- Mobile/Tablet Thumbnails Row (visible only on mobile/tablet) -->
+                            <div class="mobile-thumbs-row d-none d-md-flex d-lg-none">
+                                @if ($product->images != null && json_decode($product->images) > 0)
+                                    @if (json_decode($product->colors) && count($product->color_images_full_url) > 0)
+                                        @foreach ($product->color_images_full_url as $key => $photo)
+                                            @if ($photo['color'] != null)
+                                                <a class="product-preview-thumb color-variants-preview-box-{{ $photo['color'] }} {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                    id="mobile-preview-img{{ $photo['color'] }}"
+                                                    href="#image{{ $photo['color'] }}">
+                                                    <img alt="{{ translate('product') }}"
+                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                </a>
+                                            @else
+                                                <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                    id="mobile-preview-img{{ $key }}"
+                                                    href="#image{{ $key }}">
+                                                    <img alt="{{ translate('product') }}"
+                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach ($product->images_full_url as $key => $photo)
+                                            <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                id="mobile-preview-img{{ $key }}"
+                                                href="#image{{ $key }}">
+                                                <img alt="{{ translate('product') }}"
+                                                    src="{{ getStorageImages(path: $photo, type: 'product') }}">
+                                            </a>
+                                        @endforeach
+                                    @endif
+                                @endif
+                            </div>
+                            
+                            <!-- Small Mobile Thumbnails Row (visible only on small mobile) -->
+                            <div class="mobile-thumbs-row d-md-none">
+                                @if ($product->images != null && json_decode($product->images) > 0)
+                                    @if (json_decode($product->colors) && count($product->color_images_full_url) > 0)
+                                        @foreach ($product->color_images_full_url as $key => $photo)
+                                            @if ($photo['color'] != null)
+                                                <a class="product-preview-thumb color-variants-preview-box-{{ $photo['color'] }} {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                    id="mobile-sm-preview-img{{ $photo['color'] }}"
+                                                    href="#image{{ $photo['color'] }}">
+                                                    <img alt="{{ translate('product') }}"
+                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                </a>
+                                            @else
+                                                <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                    id="mobile-sm-preview-img{{ $key }}"
+                                                    href="#image{{ $key }}">
+                                                    <img alt="{{ translate('product') }}"
+                                                        src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}">
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach ($product->images_full_url as $key => $photo)
+                                            <a class="product-preview-thumb {{ $key == 0 ? 'active' : '' }} d-flex align-items-center justify-content-center"
+                                                id="mobile-sm-preview-img{{ $key }}"
+                                                href="#image{{ $key }}">
+                                                <img alt="{{ translate('product') }}"
+                                                    src="{{ getStorageImages(path: $photo, type: 'product') }}">
+                                            </a>
+                                        @endforeach
+                                    @endif
+                                @endif
+                            </div>
+                            
                             <div class="cz-product-gallery">
                                 <div class="cz-preview">
                                     <div id="sync1" class="owl-carousel owl-theme product-thumbnail-slider">
+                                        <!-- Rest of the content remains the same -->
                                         @if ($product->images != null && json_decode($product->images) > 0)
                                             @if (json_decode($product->colors) && count($product->color_images_full_url) > 0)
                                                 @foreach ($product->color_images_full_url as $key => $photo)
@@ -478,10 +610,10 @@
 
                     <div class="row">
                         @if ($product['details'])
-                            <div class="mt-4 rtl col-12  col-md-12 col-sm-12 text-align-direction ">
+                            <div class="mt-4 rtl col-12 col-md-12 col-sm-12 text-align-direction">
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="text-center mt-5" style="">
+                                        <div class="text-center mt-5">
                                             <h1><strong>PRODUCT <span class="text-primary">OVERVIEW</span> </strong></h1>
                                             <span class="mb-2">Our newly launched toys are already taking the world by
                                                 storm.
@@ -493,525 +625,51 @@
                                             {!! $product['details'] !!}
                                         </div>
                                     </div>
-                        @endif
-                        {{-- <div>
-                                    <div class="px-4 pb-3 mb-3 mr-0 mr-md-2   __rounded-10 pt-1">
-                                        <ul class="nav nav-tabs nav--tabs d-flex justify-content-center mt-3"
-                                            role="tablist">
-                                            <li class="nav-item">
-                                                    <a class="nav-link __inline-27 active " href="#overview"
-                                                        data-toggle="tab" role="tab">
-                                                        {{ translate('overview') }}
-                                                    </a>
-                                                </li>
-                                            <li class="nav-item">
-                                                    <a class="nav-link __inline-27" href="#video" data-toggle="tab"
-                                                        role="tab">
-                                                        {{ 'Videos' }}
-                                                    </a>
-                                                </li>
-                                            <li class="nav-item">
-                                                    <a class="nav-link __inline-27" href="#reviews" data-toggle="tab"
-                                                        role="tab">
-                                                        {{ translate('reviews') }}
-                                                    </a>
-                                                </li>
-                                            <li class="nav-item">
-                                                    <a class="nav-link __inline-27" href="#additionalinfo"
-                                                        data-toggle="tab" role="tab">
-                                                        {{ 'Additional Info' }}
-                                                    </a>
-                                                </li>
-                                        </ul>
-                                        <div class="tab-content px-lg-3">
-                                            <div class="tab-pane fade show active text-justify" id="overview"
-                                                role="tabpanel">
-                                                <div class="row pt-2 specification">
-
-                                                    @if ($product['details'])
-                                                        <div
-                                                            class="text-body col-lg-12 col-md-12  fs-13 text-justify details-text-justify rich-editor-html-content">
-                                                            {!! $product['details'] !!}
-                                                        </div>
-                                                    @endif
-
-                                                </div>
-                                                @if (!$product['details'] && ($product->video_url == null || !str_contains($product->video_url, 'youtube.com/embed/')))
-                                                    <div>
-                                                        <div class="text-center text-capitalize py-5">
-                                                            <img class="mw-90"
-                                                                src="{{ theme_asset(path: 'public/assets/front-end/img/icons/nodata.svg') }}"
-                                                                alt="">
-                                                            <p class="text-capitalize mt-2">
-                                                                <small>{{ translate('product_details_not_found') }}
-                                                                    !</small>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-
-                                            <div class="tab-pane fade" id="reviews" role="tabpanel">
-                                                @if (count($product->reviews) == 0 && $productReviews->total() == 0)
-                                                    <div>
-                                                        <div class="text-center text-capitalize">
-                                                            <img class="mw-100"
-                                                                src="{{ theme_asset(path: 'public/assets/front-end/img/icons/empty-review.svg') }}"
-                                                                alt="">
-                                                            <p class="text-capitalize">
-                                                                <small>{{ translate('No_review_given_yet') }}!</small>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <div class="row pt-2 pb-3">
-                                                        <div class="col-lg-4 col-md-5 ">
-                                                            <div
-                                                                class=" row d-flex justify-content-center align-items-center">
-                                                                <div
-                                                                    class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h2 class="overall_review mb-2 __inline-28">
-                                                                        {{ $overallRating[0] }}
-                                                                    </h2>
-                                                                </div>
-                                                                <div
-                                                                    class="d-flex justify-content-center align-items-center star-rating ">
-                                                                    @for ($inc = 1; $inc <= 5; $inc++)
-                                                                        @if ($inc <= (int) $overallRating[0])
-                                                                            <i class="tio-star text-warning"></i>
-                                                                        @elseif ($overallRating[0] != 0 && $inc <= (int) $overallRating[0] + 1.1 && $overallRating[0] > ((int) $overallRating[0]))
-                                                                            <i class="tio-star-half text-warning"></i>
-                                                                        @else
-                                                                            <i class="tio-star-outlined text-warning"></i>
-                                                                        @endif
-                                                                    @endfor
-                                                                </div>
-                                                                <div
-                                                                    class="col-12 d-flex justify-content-center align-items-center mt-2">
-                                                                    <span class="text-center">
-                                                                        {{ $productReviews->total() }}
-                                                                        {{ translate('ratings') }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8 col-md-7 pt-sm-3 pt-md-0">
-                                                            <div class="d-flex align-items-center mb-2 font-size-sm">
-                                                                <div class="__rev-txt"><span
-                                                                        class="d-inline-block align-middle text-body">{{ translate('excellent') }}</span>
-                                                                </div>
-                                                                <div class="w-0 flex-grow">
-                                                                    <div class="progress text-body __h-5px">
-                                                                        <div class="progress-bar web--bg-primary"
-                                                                            role="progressbar"
-                                                                            style="width: <?php echo $widthRating = $rating[0] != 0 ? ($rating[0] / $overallRating[1]) * 100 : 0; ?>%;"
-                                                                            aria-valuenow="60" aria-valuemin="0"
-                                                                            aria-valuemax="100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-1 text-body">
-                                                                    <span
-                                                                        class=" {{ Session::get('direction') === 'rtl' ? 'mr-3 float-left' : 'ml-3 float-right' }} ">
-                                                                        {{ $rating[0] }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div
-                                                                class="d-flex align-items-center mb-2 text-body font-size-sm">
-                                                                <div class="__rev-txt"><span
-                                                                        class="d-inline-block align-middle ">{{ translate('good') }}</span>
-                                                                </div>
-                                                                <div class="w-0 flex-grow">
-                                                                    <div class="progress __h-5px">
-                                                                        <div class="progress-bar web--bg-primary"
-                                                                            role="progressbar"
-                                                                            style="width: <?php echo $widthRating = $rating[1] != 0 ? ($rating[1] / $overallRating[1]) * 100 : 0; ?>%; background-color: #a7e453;"
-                                                                            aria-valuenow="27" aria-valuemin="0"
-                                                                            aria-valuemax="100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-1">
-                                                                    <span
-                                                                        class="{{ Session::get('direction') === 'rtl' ? 'mr-3 float-left' : 'ml-3 float-right' }}">
-                                                                        {{ $rating[1] }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div
-                                                                class="d-flex align-items-center mb-2 text-body font-size-sm">
-                                                                <div class="__rev-txt"><span
-                                                                        class="d-inline-block align-middle ">{{ translate('average') }}</span>
-                                                                </div>
-                                                                <div class="w-0 flex-grow">
-                                                                    <div class="progress __h-5px">
-                                                                        <div class="progress-bar web--bg-primary"
-                                                                            role="progressbar"
-                                                                            style="width: <?php echo $widthRating = $rating[2] != 0 ? ($rating[2] / $overallRating[1]) * 100 : 0; ?>%; background-color: #ffda75;"
-                                                                            aria-valuenow="17" aria-valuemin="0"
-                                                                            aria-valuemax="100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-1">
-                                                                    <span
-                                                                        class="{{ Session::get('direction') === 'rtl' ? 'mr-3 float-left' : 'ml-3 float-right' }}">
-                                                                        {{ $rating[2] }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div
-                                                                class="d-flex align-items-center mb-2 text-body font-size-sm">
-                                                                <div class="__rev-txt "><span
-                                                                        class="d-inline-block align-middle">{{ translate('below_Average') }}</span>
-                                                                </div>
-                                                                <div class="w-0 flex-grow">
-                                                                    <div class="progress __h-5px">
-                                                                        <div class="progress-bar web--bg-primary"
-                                                                            role="progressbar"
-                                                                            style="width: <?php echo $widthRating = $rating[3] != 0 ? ($rating[3] / $overallRating[1]) * 100 : 0; ?>%; background-color: #fea569;"
-                                                                            aria-valuenow="9" aria-valuemin="0"
-                                                                            aria-valuemax="100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-1">
-                                                                    <span
-                                                                        class="{{ Session::get('direction') === 'rtl' ? 'mr-3 float-left' : 'ml-3 float-right' }}">
-                                                                        {{ $rating[3] }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="d-flex align-items-center text-body font-size-sm">
-                                                                <div class="__rev-txt"><span
-                                                                        class="d-inline-block align-middle ">{{ translate('poor') }}</span>
-                                                                </div>
-                                                                <div class="w-0 flex-grow">
-                                                                    <div class="progress __h-5px">
-                                                                        <div class="progress-bar web--bg-primary"
-                                                                            role="progressbar"
-                                                                            style="width: <?php echo $widthRating = $rating[4] != 0 ? ($rating[4] / $overallRating[1]) * 100 : 0; ?>%;"
-                                                                            aria-valuenow="4" aria-valuemin="0"
-                                                                            aria-valuemax="100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-1">
-                                                                    <span
-                                                                        class="{{ Session::get('direction') === 'rtl' ? 'mr-3 float-left' : 'ml-3 float-right' }}">
-                                                                        {{ $rating[4] }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row pb-4 mb-3">
-                                                        <div class="__inline-30">
-                                                            <span
-                                                                class="text-capitalize">{{ translate('Product_review') }}</span>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                <div class="row pb-4">
-                                                    <div class="col-12" id="product-review-list">
-                                                        @include('web-views.partials._product-reviews')
-                                                    </div>
-
-                                                    @if (count($product->reviews) > 2)
-                                                        <div class="col-12">
-                                                            <div
-                                                                class="card-footer d-flex justify-content-center align-items-center">
-                                                                <button
-                                                                    class="btn text-white view_more_button web--bg-primary">
-                                                                    {{ translate('view_more') }}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="additionalinfo" role="tabpanel">
-                                                <div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Sl</th>
-                                                                    <th scope="col">Fetures</th>
-                                                                    <th scope="col">Column 3</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr class="">
-                                                                    <td scope="row">R1C1</td>
-                                                                    <td>R1C2</td>
-                                                                    <td>R1C3</td>
-                                                                </tr>
-                                                                <tr class="">
-                                                                    <td scope="row">Item</td>
-                                                                    <td>Item</td>
-                                                                    <td>Item</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="video" role="tabpanel">
-                                                <div>
-                                                    @if ($product->video_url != null && str_contains($product->video_url, 'youtube.com/embed/'))
-                                                        <div class="col-12 mb-4">
-                                                            <iframe width="420" height="315"
-                                                                src="{{ $product->video_url }}">
-                                                            </iframe>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    {{-- <div class="col-lg-3">
-                    @php($companyReliability = getWebConfig('company_reliability'))
-                    @if ($companyReliability != null)
-                        <div class="product-details-shipping-details">
-                            @foreach ($companyReliability as $key => $value)
-                                @if ($value['status'] == 1 && !empty($value['title']))
-                                    <div class="shipping-details-bottom-border">
-                                        <div class="px-3 py-3">
-                                            <img class="{{Session::get('direction') === "rtl" ? 'float-right ml-2' : 'mr-2'}} __img-20"
-                                                 src="{{ getStorageImages(path: imagePathProcessing(imageData: $value['image'],path: 'company-reliability'), type: 'source', source: 'public/assets/front-end/img'.'/'.$value['item'].'.png') }}"
-                                                alt="">
-                                            <span>{{translate($value['title'])}}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if (getWebConfig(name: 'business_mode') == 'multi')
-                    <div class="__inline-31">
-
-                        @if ($product->added_by == 'seller')
-                            @if (isset($product->seller->shop))
-                                <div class="row position-relative">
-                                    <div class="col-12 position-relative">
-                                        <a href="{{route('shopView',['id'=> $product?->seller?->shop->id])}}" class="d-block">
-                                            <div class="d-flex __seller-author align-items-center">
-                                                <div>
-                                                    <img class="__img-60 img-circle" alt=""
-                                                         src="{{ getStorageImages(path: $product?->seller?->shop->image_full_url, type: 'shop') }}">
-                                                </div>
-                                                <div
-                                                    class="ms-2 w-0 flex-grow">
-                                                    <h6>
-                                                        {{$product->seller->shop->name}}
-                                                    </h6>
-                                                    <span class="text-capitalize">{{translate('vendor_info')}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-
-                                                @if ($sellerTemporaryClose || ($product->seller->shop->vacation_status && $currentDate >= $sellerVacationStartDate && $currentDate <= $sellerVacationEndDate))
-                                                    <span class="chat-seller-info product-details-seller-info"
-                                                          data-toggle="tooltip"
-                                                          title="{{ translate('this_shop_is_temporary_closed_or_on_vacation').' '.translate('You_cannot_add_product_to_cart_from_this_shop_for_now') }}">
-                                                        <img src="{{theme_asset(path: 'public/assets/front-end/img/info.png')}}" alt="i">
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <div class="row d-flex justify-content-between">
-                                            <div class="col-6 ">
-                                                <div
-                                                    class="d-flex justify-content-center align-items-center rounded __h-79px hr-right-before">
-                                                    <div class="text-center">
-                                                        <img src="{{theme_asset(path: 'public/assets/front-end/img/rating.svg')}}"
-                                                             class="mb-2" alt="">
-                                                        <div class="__text-12px text-base">
-                                                            <strong>{{$totalReviews}}</strong> {{translate('reviews')}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div
-                                                    class="d-flex justify-content-center align-items-center rounded __h-79px">
-                                                    <div class="text-center">
-                                                        <img
-                                                            src="{{theme_asset(path: 'public/assets/front-end/img/products.svg')}}"
-                                                            class="mb-2" alt="">
-                                                        <div class="__text-12px text-base">
-                                                            <strong>{{$productsForReview->count()}}</strong> {{translate('products')}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 position-static mt-3">
-                                        <div class="chat_with_seller-buttons">
-                                            @if (auth('customer')->id())
-                                                <button class="btn w-100 d-block text-center web--bg-primary text-white"
-                                                        data-toggle="modal"
-                                                        data-target="#chatting_modal" {{ ($product->seller->shop->temporary_close || ($product->seller->shop->vacation_status && date('Y-m-d') >= date('Y-m-d', strtotime($product->seller->shop->vacation_start_date)) && date('Y-m-d') <= date('Y-m-d', strtotime($product->seller->shop->vacation_end_date)))) ? 'disabled' : '' }}>
-                                                    <img class="mb-1" alt=""
-                                                        src="{{theme_asset(path: 'public/assets/front-end/img/chat-16-filled-icon.png')}}">
-                                                    <span class="d-none d-sm-inline-block text-capitalize">
-                                                        {{translate('chat_with_vendor')}}
-                                                    </span>
-                                                </button>
-                                            @else
-                                                <a href="{{route('customer.auth.login')}}"
-                                                   class="btn w-100 d-block text-center web--bg-primary text-white">
-                                                    <img src="{{theme_asset(path: 'public/assets/front-end/img/chat-16-filled-icon.png')}}"
-                                                        class="mb-1" alt="">
-                                                    <span class="d-none d-sm-inline-block text-capitalize">{{translate('chat_with_vendor')}}</span>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @else
-                            <div class="row position-relative d-flex justify-content-between">
-                                <div class="col-9">
-                                    <a href="{{route('shopView',[0])}}" class="row d-flex ">
-                                        <div>
-                                            <img class="__inline-32" alt=""
-                                                 src="{{ getStorageImages(path:$web_config['fav_icon'], type: 'logo') }}">
-                                        </div>
-                                        <div class="{{Session::get('direction') === "rtl" ? 'right' : 'mt-3 ml-2'}} get-view-by-onclick"
-                                             data-link="{{ route('shopView',[0]) }}">
-                                            <span class="font-bold __text-16px">
-                                                {{$web_config['name']->value}}
-                                            </span><br>
-                                        </div>
-
-                                        @if ($product->added_by == 'admin' && ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate)))
-                                            <div class="{{Session::get('direction') === "rtl" ? 'right' : 'ml-3'}}">
-                                                <span class="chat-seller-info" data-toggle="tooltip"
-                                                      title="{{translate('this_shop_is_temporary_closed_or_on_vacation._You_cannot_add_product_to_cart_from_this_shop_for_now')}}">
-                                                    <img src="{{theme_asset(path: 'public/assets/front-end/img/info.png')}}"
-                                                         alt="i">
-                                                </span>
-                                            </div>
-                                        @endif
-                                    </a>
-                                </div>
-
-                                <div class="col-12 mt-2">
-                                    <div class="row d-flex justify-content-between">
-                                        <div class="col-6 ">
-                                            <div
-                                                class="d-flex justify-content-center align-items-center rounded __h-79px hr-right-before">
-                                                <div class="text-center">
-                                                    <img src="{{theme_asset(path: 'public/assets/front-end/img/rating.svg')}}"
-                                                         class="mb-2" alt="">
-                                                    <div class="__text-12px text-base">
-                                                        <strong>{{$totalReviews}}</strong> {{translate('reviews')}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div
-                                                class="d-flex justify-content-center align-items-center rounded __h-79px">
-                                                <div class="text-center">
-                                                    <img src="{{theme_asset(path: 'public/assets/front-end/img/products.svg')}}"
-                                                         class="mb-2" alt="">
-                                                    <div class="__text-12px text-base">
-                                                        <strong>{{$productsForReview->count()}}</strong> {{translate('products')}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 position-static mt-3">
-                                    <div class="chat_with_seller-buttons">
-                                        @if (auth('customer')->id())
-                                            <button class="btn w-100 d-block text-center web--bg-primary text-white"
-                                                    data-toggle="modal"
-                                                    data-target="#chatting_modal" {{ ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate)) ? 'disabled' : '' }}>
-                                                <img class="mb-1" alt=""
-                                                     src="{{ theme_asset(path: 'public/assets/front-end/img/chat-16-filled-icon.png')}}">
-                                                <span class="d-none d-sm-inline-block text-capitalize">
-                                                        {{translate('chat_with_vendor')}}
-                                                </span>
-                                            </button>
-                                        @else
-                                            <a href="{{ route('shopView',[0]) }}" class="btn w-100 d-block text-center web--bg-primary text-white">
-                                                <img class="mb-1" alt=""
-                                                     src="{{ theme_asset(path: 'public/assets/front-end/img/chat-16-filled-icon.png')}}">
-                                                <span class="d-none d-sm-inline-block text-capitalize">
-                                                        {{translate('chat_with_vendor')}}
-                                                </span>
-                                            </a>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
                         @endif
                     </div>
-                    @endif
-
-                    <div class="pt-4 pb-3">
-                        <span class=" __text-16px font-bold text-capitalize">
-                            @if (getWebConfig(name: 'business_mode') == 'multi')
-                                {{ translate('more_from_the_store')}}
-                            @else
-                                {{ translate('you_may_also_like')}}
-                            @endif
-                        </span>
-                    </div>
-                    <div>
-                        @foreach ($moreProductFromSeller as $item)
-                            @include('web-views.partials._seller-products-product-details',['product'=>$item,'decimal_point_settings'=>$decimalPointSettings])
-                        @endforeach
-                    </div>
-                </div> --}}
-    </div>
-    </div>
-    <div class="div"
-        style="background-color: #fdf4f5;
-           background-image: url({{ theme_asset(path: 'public/assets/front-end/img/icons/Awards-Sections_bg.png') }});
-           background-repeat: no-repeat;
-           /* background-position: center center; */
-           background-size: 100%;">
-        <div class="pt-4 pb-1 container">
-            <div class="container rtl mt-4">
-                <div class="text-center mt-5 mb-5" style="">
-                    <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
-                    <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
-                        don't want to miss out on these!</span>
                 </div>
             </div>
         </div>
-        <div class="container mb-5 pb-5">
-            <div class="col-3">
-                @include('web-views.partials._product-card-2', [
-                    'product' => $product,
-                    'decimal_point_settings' => $decimalPointSettings,
-                ])
+    </div>
+
+    <!-- BRAND NEW BOXES Section - Full Width with Card in Original Size -->
+    <div class="brand-new-boxes-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
+                <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
+                    don't want to miss out on these!</span>
+            </div>
+        </div>
+        
+        <!-- Product card container -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-12 mb-4">
+                    @include('web-views.partials._product-card-2', [
+                        'product' => $product,
+                        'decimal_point_settings' => $decimalPointSettings,
+                    ])
+                </div>
+                
+                <!-- You can add more product cards here as needed -->
+                @if(isset($moreProductFromSeller) && count($moreProductFromSeller) > 0)
+                    @foreach($moreProductFromSeller as $item)
+                        <div class="col-md-3 col-sm-6 col-12 mb-4">
+                            @include('web-views.partials._product-card-2', [
+                                'product' => $item,
+                                'decimal_point_settings' => $decimalPointSettings,
+                            ])
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
 
+    <!-- FAQ Section -->
     <div class="mb-5">
         <div class="pt-4 pb-1 container">
             <div class="container rtl mt-4">
@@ -1048,58 +706,8 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const accordion = document.getElementById('faqAccordion');
-            accordion.addEventListener('show.bs.collapse', function(event) {
-                const icon = event.target.parentNode.querySelector('.toggle-icon');
-                if (icon) {
-                    icon.classList.remove('tio-add');
-                    icon.classList.add('tio-minus');
-                }
-            });
-            accordion.addEventListener('hide.bs.collapse', function(event) {
-                const icon = event.target.parentNode.querySelector('.toggle-icon');
-                if (icon) {
-                    icon.classList.remove('tio-minus');
-                    icon.classList.add('tio-add');
-                }
-            });
-        });
-    </script>
-    </div>
-    {{-- <div class="__inline-23 mt-5 col-12"
-                        style="background-color: #fdf4f5;
-           background-image: url({{ theme_asset(path: 'public/assets/front-end/img/icons/Awards-Sections_bg.png') }});
-           background-repeat: no-repeat;
-           /* background-position: center center; */
-           background-size: 100%;">
-
-                        <div class=" pt-4 pb-1">
-                            <div class="container rtl mt-4">
-                                <div class="text-center mt-5 mb-5">
-                                    <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
-                                    <span class="mb-2">
-                                        Our newly launched toys are already taking the world by storm. You
-                                        definitely don't want to miss out on these!
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container mb-5 pb-5">
-
-        <div class="col-3">
-            @include('web-views.partials._product-card-2', [
-                'product' => $product,
-                'decimal_point_settings' => $decimalPointSettings,
-            ])
-        </div>
-
-                        </div>
-                    </div> --}}
-
-    <div class="bottom-sticky bg-white ">
+    <!-- Bottom Sticky Bar -->
+    <div class="bottom-sticky bg-white">
         <div class="d-flex flex-column gap-1 py-2 container">
             <div class="d-flex justify-content-between align-items-center flex-wrap responsive-layout">
                 <div class="d-flex align-items-center gap-2 left-section">
@@ -1188,7 +796,7 @@
                             <span class="string-limit">{{ translate('add_to_cart') }}</span>
                         </button>
                         <button type="button" data-product-id="{{ $product['id'] }}"
-                            class="btn __text-18px  d-none d-sm-block product-action-add-wishlist">
+                            class="btn __text-18px d-none d-sm-block product-action-add-wishlist">
                             <i class="fa {{ $wishlistStatus == 1 ? 'fa-heart' : 'fa-heart-o' }} wishlist_icon_{{ $product['id'] }} web-text-primary"
                                 aria-hidden="true"></i>
 
@@ -1255,59 +863,6 @@
         }
     </style>
 
-    {{-- need to change design here --}}
-    {{-- <div class="pt-4 pb-3">
-                        <span class=" __text-16px font-bold text-capitalize">
-                            @if (getWebConfig(name: 'business_mode') == 'multi')
-                                {{ translate('more_from_the_store')}}
-                            @else
-                                {{ translate('you_may_also_like')}}
-                            @endif
-                        </span>
-                    </div>
-                    <div>
-                        @foreach ($moreProductFromSeller as $item)
-                            @include('web-views.partials._seller-products-product-details',['product'=>$item,'decimal_point_settings'=>$decimalPointSettings])
-                        @endforeach
-                    </div>
-                </div> --}}
-    {{-- @if (count($relatedProducts) > 0)
-        <div class="container rtl text-align-direction">
-            <div class="card __card border-0">
-                <div class="card-body">
-                    <div class="row flex-between">
-                        <div class="ms-1">
-                            <h4 class="text-capitalize font-bold fs-16">{{ translate('similar_products') }}</h4>
-                        </div>
-                        <div class="view_all d-flex justify-content-center align-items-center">
-                            <div>
-                                @php($category = json_decode($product['category_ids']))
-                                @if ($category)
-                                    <a class="text-capitalize view-all-text web-text-primary me-1"
-                                        href="{{ route('products', ['category_id' => $category[0]->id, 'data_from' => 'category', 'page' => 1]) }}">{{ translate('view_all') }}
-                                        <i
-                                            class="czi-arrow-{{ Session::get('direction') === 'rtl' ? 'left mr-1 ml-n1 mt-1 ' : 'right ml-1 mr-n1' }}"></i>
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-1">
-                        @foreach ($relatedProducts as $key => $relatedProduct)
-                            <div class="col-xl-2 col-sm-3 col-6">
-                                @include('web-views.partials._inline-single-product-without-eye', [
-                                    'product' => $relatedProduct,
-                                    'decimal_point_settings' => $decimalPointSettings,
-                                ])
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif --}}
-
     <div class="modal fade rtl text-align-direction" id="show-modal-view" tabindex="-1" role="dialog"
         aria-labelledby="show-modal-image" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -1320,8 +875,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
     </div>
 
     @if ($product?->preview_file_full_url['path'])
@@ -1341,5 +894,62 @@
     <script src="{{ theme_asset(path: 'public/assets/front-end/js/product-details.js') }}"></script>
     <script type="text/javascript" async="async"
         src="https://platform-api.sharethis.com/js/sharethis.js#property=5f55f75bde227f0012147049&product=sticky-share-buttons">
+    </script>
+    
+    <!-- Updated JavaScript for thumbnails on mobile and desktop -->
+    <script>
+        $(document).ready(function() {
+            // Common function to handle thumbnail clicks
+            function handleThumbnailClick(elem) {
+                var targetId = $(elem).attr('href');
+                
+                // Remove active class from all thumbnails
+                $('.product-preview-thumb').removeClass('active');
+                
+                // Add active class to clicked thumbnail
+                $(elem).addClass('active');
+                
+                // Hide all preview images
+                $('.product-preview-item').removeClass('active');
+                
+                // Show the target image
+                $(targetId).addClass('active');
+            }
+            
+            // Desktop thumbnails click handler
+            $('.product-thumbs-wrapper .product-preview-thumb').on('click', function(e) {
+                e.preventDefault();
+                handleThumbnailClick(this);
+            });
+            
+            // Mobile/Tablet thumbnails click handler
+            $('.mobile-thumbs-row .product-preview-thumb').on('click', function(e) {
+                e.preventDefault();
+                handleThumbnailClick(this);
+                
+                // Synchronize with desktop thumbnails
+                var targetId = $(this).attr('href');
+                var desktopThumb = $('.product-thumbs-wrapper').find('a[href="' + targetId + '"]');
+                if (desktopThumb.length) {
+                    desktopThumb.addClass('active');
+                }
+            });
+            
+            // Handle color selection affecting thumbnails
+            $('.focus-preview-image-by-color').on('click', function() {
+                var colorKey = $(this).data('key');
+                
+                // Trigger click on desktop thumbnail
+                $('#preview-img' + colorKey).trigger('click');
+                
+                // Also update mobile thumbnails if they exist
+                if ($('#mobile-preview-img' + colorKey).length) {
+                    $('#mobile-preview-img' + colorKey).addClass('active');
+                }
+                if ($('#mobile-sm-preview-img' + colorKey).length) {
+                    $('#mobile-sm-preview-img' + colorKey).addClass('active');
+                }
+            });
+        });
     </script>
 @endpush
