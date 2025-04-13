@@ -9,8 +9,10 @@
         .product-thumbs-wrapper {
             display: flex;
             flex-direction: column;
+            max-height: 400px;
+            overflow-y: auto;
         }
-        
+
         .product-preview-thumb {
             width: 60px;
             height: 60px;
@@ -21,21 +23,47 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        
+
+        .product-preview-thumb:hover {
+            border-color: var(--web-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-preview-thumb.active {
+            border: 2px solid var(--web-primary);
+            box-shadow: 0 0 0 1px var(--web-primary);
+        }
+
         .product-preview-thumb img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
-        
+
+        /* Ensure smooth transitions for main image changes */
+        .product-preview-item {
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            display: none;
+        }
+
+        .product-preview-item.active {
+            display: flex;
+            opacity: 1;
+        }
+
         /* Mobile and tablet view (less than 992px) */
         @media (max-width: 991px) {
+
             /* Hide the left column thumbnails */
             .product-thumbs-col {
                 display: none;
             }
-            
+
             /* Create new horizontal thumbnail row above main image */
             .mobile-thumbs-row {
                 display: flex;
@@ -44,32 +72,40 @@
                 margin-bottom: 15px;
                 padding-bottom: 5px;
                 -webkit-overflow-scrolling: touch;
-                scrollbar-width: none; /* Firefox */
+                scrollbar-width: none;
+                padding: 5px;
+                background: rgba(249, 249, 249, 0.7);
+                border-radius: 8px;
             }
-            
+
             .mobile-thumbs-row::-webkit-scrollbar {
-                display: none; /* Chrome, Safari, Edge */
+                display: none;
+                /* Chrome, Safari, Edge */
             }
-            
+
             .mobile-thumbs-row .product-preview-thumb {
                 flex: 0 0 auto;
                 width: 70px;
                 height: 70px;
                 margin-right: 10px;
                 margin-bottom: 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
-            
+
+            .mobile-thumbs-row .product-preview-thumb:hover {
+                transform: translateY(-1px);
+            }
+
             .mobile-thumbs-row .product-preview-thumb.active {
                 border: 2px solid var(--web-primary);
             }
-            
+
             /* Adjust main image container */
             .product-main-col {
                 width: 100%;
             }
         }
-        
+
         /* Small mobile view adjustments */
         @media (max-width: 576px) {
             .mobile-thumbs-row .product-preview-thumb {
@@ -77,6 +113,187 @@
                 height: 60px;
                 margin-right: 8px;
             }
+        }
+
+        /* Fix for owl carousel navigation */
+        #sync1 .owl-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        #sync1 .owl-nav button {
+            background: rgba(255, 255, 255, 0.8) !important;
+            width: 40px;
+            height: 40px;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
+            margin: 0 10px;
+        }
+
+        #sync1 .owl-nav button:hover {
+            background: #fff !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #sync1 .owl-nav button i {
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* Fixed background image styling */
+        .brand-new-boxes-section {
+            position: relative;
+            width: 100%;
+            padding: 50px 0;
+            background: #fdf4f5 url('{{ asset('public/assets/front-end/img/icons/bg-section.png') }}') no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            background-blend-mode: normal;
+            /* This ensures the image doesn't blend with background color */
+        }
+
+        /* Add a pseudo-element to ensure the background image shows properly */
+        .brand-new-boxes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{{ asset('public/assets/front-end/img/icons/bg-section.png') }}') no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            opacity: 1;
+            z-index: -1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+
+            .brand-new-boxes-section,
+            .brand-new-boxes-section::before {
+                background-size: fit;
+            }
+        }
+
+        /* Default Styles for sticky bar */
+        .responsive-layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-image {
+            height: 50px;
+            width: 50px;
+            object-fit: cover;
+        }
+
+        .right-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* For Screens 1200px and Below */
+        @media (max-width: 1200px) {
+            .responsive-layout {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .left-section,
+            .right-section {
+                flex: 1 1 100%;
+                justify-content: space-between;
+            }
+
+            .left-section {
+                flex-direction: row;
+            }
+
+            .right-section {
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+
+        /* Increase bottom sticky buttons text size */
+        .bottom-sticky .string-limit {
+            font-size: 16px !important;
+            /* Increased from default */
+            font-weight: 600;
+        }
+
+        .bottom-sticky .btn {
+            padding: 8px 16px !important;
+            /* Slightly larger padding to accommodate larger text */
+        }
+
+        .bottom-sticky .price-details {
+            font-size: 15px !important;
+            /* Increased from 13px */
+        }
+
+        .bottom-sticky #chosen_price_mobile,
+        .bottom-sticky #set-tax-amount-mobile {
+            font-size: 16px !important;
+        }
+
+        /* Increase FAQ section text size */
+        #faqAccordion .card-header h2 .btn-link {
+            font-size: 18px !important;
+            /* Increased from default */
+            font-weight: 500;
+        }
+
+        #faqAccordion .card-body {
+            font-size: 16px !important;
+            /* Increased from default */
+            line-height: 1.6;
+        }
+
+        /* Make the FAQ section more prominent */
+        #faqAccordion .card {
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #faqAccordion .card-header {
+            /* background-color: #f8f9fa; */
+            padding: 15px 20px;
+        }
+
+
+        /* Make sure toggle icon is aligned and visible */
+        #faqAccordion .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        #faqAccordion .collapsed .toggle-icon.tio-plus {
+            transform: rotate(0deg);
+        }
+
+        #faqAccordion .toggle-icon.tio-minus {
+            transform: rotate(180deg);
         }
     </style>
 @endpush
@@ -161,7 +378,7 @@
                                     @endif
                                 @endif
                             </div>
-                            
+
                             <!-- Small Mobile Thumbnails Row (visible only on small mobile) -->
                             <div class="mobile-thumbs-row d-md-none">
                                 @if ($product->images != null && json_decode($product->images) > 0)
@@ -195,7 +412,7 @@
                                     @endif
                                 @endif
                             </div>
-                            
+
                             <div class="cz-product-gallery">
                                 <div class="cz-preview">
                                     <div id="sync1" class="owl-carousel owl-theme product-thumbnail-slider">
@@ -442,6 +659,7 @@
                                             <div>
                                                 <div
                                                     class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-0 mx-1 flex-start row ps-0">
+
                                                     @foreach ($choice->options as $index => $option)
                                                         <div>
                                                             <div class="for-mobile-capacity">
@@ -492,7 +710,8 @@
                                                     </span>
                                                 </div>
                                                 <input type="hidden" class="product-generated-variation-code"
-                                                    name="product_variation_code" data-product-id="{{ $product['id'] }}">
+                                                    name="product_variation_code"
+                                                    data-product-id="{{ $product['id'] }}">
                                                 <input type="hidden" value=""
                                                     class="in_cart_key form-control w-50" name="key">
                                             </div>
@@ -634,18 +853,17 @@
         </div>
     </div>
 
-    <!-- BRAND NEW BOXES Section - Full Width with Card in Original Size -->
+    <!-- BRAND NEW BOXES Section with Fixed Background Image -->
     <div class="brand-new-boxes-section">
+        <!-- Content container -->
         <div class="container">
             <div class="text-center mb-5">
                 <h1><strong>BRAND <span class="text-primary">NEW BOXES</span> OF JOY</strong></h1>
                 <span class="mb-2">Our newly launched toys are already taking the world by storm. You definitely
                     don't want to miss out on these!</span>
             </div>
-        </div>
-        
-        <!-- Product card container -->
-        <div class="container">
+
+            <!-- Product card container -->
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-12 mb-4">
                     @include('web-views.partials._product-card-2', [
@@ -653,10 +871,10 @@
                         'decimal_point_settings' => $decimalPointSettings,
                     ])
                 </div>
-                
+
                 <!-- You can add more product cards here as needed -->
-                @if(isset($moreProductFromSeller) && count($moreProductFromSeller) > 0)
-                    @foreach($moreProductFromSeller as $item)
+                @if (isset($moreProductFromSeller) && count($moreProductFromSeller) > 0)
+                    @foreach ($moreProductFromSeller as $item)
                         <div class="col-md-3 col-sm-6 col-12 mb-4">
                             @include('web-views.partials._product-card-2', [
                                 'product' => $item,
@@ -813,55 +1031,6 @@
             </div>
         </div>
     </div>
-    <style>
-        /* Default Styles */
-        .responsive-layout {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: nowrap;
-        }
-
-        .left-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .product-image {
-            height: 50px;
-            width: 50px;
-            object-fit: cover;
-        }
-
-        .right-section {
-            display: flex;
-            gap: 15px;
-        }
-
-        /* For Screens 1200px and Below */
-        @media (max-width: 1200px) {
-            .responsive-layout {
-                flex-wrap: wrap;
-                gap: 15px;
-            }
-
-            .left-section,
-            .right-section {
-                flex: 1 1 100%;
-                justify-content: space-between;
-            }
-
-            .left-section {
-                flex-direction: row;
-            }
-
-            .right-section {
-                justify-content: center;
-                margin-top: 10px;
-            }
-        }
-    </style>
 
     <div class="modal fade rtl text-align-direction" id="show-modal-view" tabindex="-1" role="dialog"
         aria-labelledby="show-modal-image" aria-hidden="true">
@@ -878,7 +1047,9 @@
     </div>
 
     @if ($product?->preview_file_full_url['path'])
-        @include('web-views.partials._product-preview-modal', ['previewFileInfo' => $previewFileInfo])
+        @include('web-views.partials._product-preview-modal', [
+            'previewFileInfo' => $previewFileInfo,
+        ])
     @endif
 
     @include('layouts.front-end.partials.modal._chatting', [
@@ -895,61 +1066,182 @@
     <script type="text/javascript" async="async"
         src="https://platform-api.sharethis.com/js/sharethis.js#property=5f55f75bde227f0012147049&product=sticky-share-buttons">
     </script>
-    
+
     <!-- Updated JavaScript for thumbnails on mobile and desktop -->
     <script>
         $(document).ready(function() {
             // Common function to handle thumbnail clicks
             function handleThumbnailClick(elem) {
                 var targetId = $(elem).attr('href');
-                
+
                 // Remove active class from all thumbnails
                 $('.product-preview-thumb').removeClass('active');
-                
+
                 // Add active class to clicked thumbnail
                 $(elem).addClass('active');
-                
+
                 // Hide all preview images
                 $('.product-preview-item').removeClass('active');
-                
+
                 // Show the target image
                 $(targetId).addClass('active');
+
+                // Control the owl carousel to show the corresponding slide
+                var index = $(targetId).index();
+                $('#sync1').trigger('to.owl.carousel', [index, 300]);
             }
-            
+
             // Desktop thumbnails click handler
             $('.product-thumbs-wrapper .product-preview-thumb').on('click', function(e) {
                 e.preventDefault();
                 handleThumbnailClick(this);
+
+                // Update mobile thumbnails to match
+                var targetId = $(this).attr('href');
+                $('.mobile-thumbs-row').find('a[href="' + targetId + '"]').addClass('active');
             });
-            
+
             // Mobile/Tablet thumbnails click handler
             $('.mobile-thumbs-row .product-preview-thumb').on('click', function(e) {
                 e.preventDefault();
                 handleThumbnailClick(this);
-                
+
                 // Synchronize with desktop thumbnails
                 var targetId = $(this).attr('href');
-                var desktopThumb = $('.product-thumbs-wrapper').find('a[href="' + targetId + '"]');
-                if (desktopThumb.length) {
-                    desktopThumb.addClass('active');
-                }
+                $('.product-thumbs-wrapper').find('a[href="' + targetId + '"]').addClass('active');
             });
-            
+
             // Handle color selection affecting thumbnails
             $('.focus-preview-image-by-color').on('click', function() {
                 var colorKey = $(this).data('key');
-                
-                // Trigger click on desktop thumbnail
-                $('#preview-img' + colorKey).trigger('click');
-                
-                // Also update mobile thumbnails if they exist
-                if ($('#mobile-preview-img' + colorKey).length) {
-                    $('#mobile-preview-img' + colorKey).addClass('active');
-                }
-                if ($('#mobile-sm-preview-img' + colorKey).length) {
-                    $('#mobile-sm-preview-img' + colorKey).addClass('active');
+                var colorId = $(this).data('colorid');
+
+                // Find and trigger click on the appropriate thumbnail
+                if ($('#preview-img' + colorKey).length) {
+                    $('#preview-img' + colorKey).trigger('click');
+                } else if ($('.color-variants-preview-box-' + colorKey).length) {
+                    $('.color-variants-preview-box-' + colorKey).first().trigger('click');
                 }
             });
+
+
+        });
+        $(document).ready(function() {
+            // Initialize Owl Carousel first
+            $('#sync1').owlCarousel({
+                items: 1,
+                slideSpeed: 2000,
+                nav: true,
+                autoplay: false,
+                dots: false,
+                loop: false, // Changed to false to prevent issues with cloned slides
+                responsiveRefreshRate: 200,
+                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
+            });
+
+            // Common function to handle thumbnail clicks
+            function handleThumbnailClick(elem) {
+                var targetId = $(elem).attr('href');
+                targetId = targetId.replace('#', ''); // Remove the # from the href
+
+                // Remove active class from all thumbnails
+                $('.product-preview-thumb').removeClass('active');
+
+                // Add active class to clicked thumbnail
+                $(elem).addClass('active');
+
+                // Hide all preview images first
+                $('.product-preview-item').removeClass('active').hide();
+
+                // Show the target image
+                $('#' + targetId).addClass('active').show();
+
+                // Find the index of the image to display
+                var items = $('.product-preview-item');
+                var index = items.index($('#' + targetId));
+
+                if (index >= 0) {
+                    // Temporarily remove the event handler
+                    $('#sync1').off('changed.owl.carousel');
+
+                    // Move the carousel to the correct slide
+                    $('#sync1').trigger('to.owl.carousel', [index, 300, true]);
+
+                    // Re-attach the event handler after a short delay
+                    setTimeout(function() {
+                        // Handle owl carousel navigation
+                        $('#sync1').on('changed.owl.carousel', carouselChangeHandler);
+                    }, 400);
+                }
+            }
+
+            // Handler for carousel changes
+            function carouselChangeHandler(event) {
+                var currentIndex = event.item.index;
+
+                // Skip if index is invalid (happens during initialization)
+                if (currentIndex === null) return;
+
+                // Remove active class from all thumbnails
+                $('.product-preview-thumb').removeClass('active');
+
+                // Find the corresponding item
+                var items = $('.product-preview-item');
+                if (currentIndex >= 0 && currentIndex < items.length) {
+                    // Get ID of the active item
+                    var activeItemId = items.eq(currentIndex).attr('id');
+
+                    // Add active class to corresponding thumbnail
+                    $('a[href="#' + activeItemId + '"]').addClass('active');
+
+                    // Update active state on main images
+                    $('.product-preview-item').removeClass('active').hide();
+                    $('#' + activeItemId).addClass('active').show();
+                }
+            }
+
+            // Attach the carousel change handler
+            $('#sync1').on('changed.owl.carousel', carouselChangeHandler);
+
+            // Desktop thumbnails click handler
+            $('.product-thumbs-wrapper .product-preview-thumb').on('click', function(e) {
+                e.preventDefault();
+                handleThumbnailClick(this);
+
+                // Update mobile thumbnails to match
+                var targetId = $(this).attr('href');
+                $('.mobile-thumbs-row').find('a[href="' + targetId + '"]').addClass('active');
+            });
+
+            // Mobile/Tablet thumbnails click handler
+            $('.mobile-thumbs-row .product-preview-thumb').on('click', function(e) {
+                e.preventDefault();
+                handleThumbnailClick(this);
+
+                // Synchronize with desktop thumbnails
+                var targetId = $(this).attr('href');
+                $('.product-thumbs-wrapper').find('a[href="' + targetId + '"]').addClass('active');
+            });
+
+            // Handle color selection affecting thumbnails
+            $('.focus-preview-image-by-color').on('click', function() {
+                var colorKey = $(this).data('key');
+
+                // Find and trigger click on the appropriate thumbnail
+                if ($('#preview-img' + colorKey).length) {
+                    $('#preview-img' + colorKey).trigger('click');
+                } else if ($('.color-variants-preview-box-' + colorKey).length) {
+                    $('.color-variants-preview-box-' + colorKey).first().trigger('click');
+                }
+            });
+
+            // Show the first image initially
+            var firstThumb = $('.product-thumbs-wrapper .product-preview-thumb').first();
+            if (firstThumb.length) {
+                setTimeout(function() {
+                    firstThumb.trigger('click');
+                }, 100);
+            }
         });
     </script>
 @endpush
