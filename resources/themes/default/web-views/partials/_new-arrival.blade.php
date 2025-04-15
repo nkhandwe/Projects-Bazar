@@ -69,69 +69,75 @@
 <section class="interest-section">
     <div class="text-center mt-5 mb-5">
         <h1><strong>SHOP BY <span class="text-primary">INTEREST</span></strong></h1>
-        <span>A whole lotta fun & learning</span>
+        <h3>A whole lotta fun & learning</h3>
     </div>
 
     @php($subcategories = \App\Models\Category::where('parent_id', '!=', 0)->get())
+    @php($groupedSubcategories = $subcategories->groupBy('name'))
 
     <div class="container rtl pb-4 px-3">
         <ul class="nav nav-pills mb-3" id="subcategoryTabs" role="tablist">
-            @foreach ($subcategories as $key => $subcategory)
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link {{ $key === 0 ? 'active' : '' }}"
-                        id="subcategory-tab-{{ $subcategory->id }}" data-bs-toggle="tab"
-                        data-bs-target="#subcategory-{{ $subcategory->id }}" type="button" role="tab"
-                        aria-controls="subcategory-{{ $subcategory->id }}"
-                        aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
-                        {{ $subcategory->name }}
-                    </button>
-                </li>
+            @foreach ($groupedSubcategories as $name => $subcategoryGroup)
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                    id="subcategory-tab-{{ $loop->iteration }}" data-bs-toggle="tab"
+                    data-bs-target="#subcategory-{{ $loop->iteration }}" type="button" role="tab"
+                    aria-controls="subcategory-{{ $loop->iteration }}"
+                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                    {{ $name }}
+                </button>
+            </li>
             @endforeach
         </ul>
 
         <div class="tab-content" id="subcategoryTabsContent">
-            @foreach ($subcategories as $key => $subcategory)
-                <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="subcategory-{{ $subcategory->id }}"
-                    role="tabpanel" aria-labelledby="subcategory-tab-{{ $subcategory->id }}">
-                    @if ($subcategory->subCategoryProduct->count() > 0)
-                        <div class="__p-20px rounded overflow-hidden">
-                            <div class="mt-2">
-                                <div class="owl-carousel owl-theme new-arrivals-product">
-                                    @foreach ($subcategory->subCategoryProduct as $product)
-                                        @include('web-views.partials._product-card-2', [
-                                            'product' => $product,
-                                            'decimal_point_settings' => $decimalPointSettings,
-                                        ])
-                                    @endforeach
-                                </div>
+            @foreach ($groupedSubcategories as $name => $subcategoryGroup)
+            <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="subcategory-{{ $loop->iteration }}"
+                role="tabpanel" aria-labelledby="subcategory-tab-{{ $loop->iteration }}">
+                @php($allProducts = collect())
+                @foreach($subcategoryGroup as $subcategory)
+                @php($allProducts = $allProducts->merge($subcategory->subCategoryProduct))
+                @endforeach
 
-                                <!-- Grid View for Small Screens -->
-                                <div class="d-sm-none">
-                                    <div class="row g-2">
-                                        @foreach ($subcategory->subCategoryProduct as $key => $product)
-                                            @if ($key < 4)
-                                                <div class="col-6">
-                                                    @include('web-views.partials._product-card-2', [
-                                                        'product' => $product,
-                                                        'decimal_point_settings' => $decimalPointSettings,
-                                                    ])
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div>
+                @if ($allProducts->count() > 0)
+                <div class="__p-20px rounded overflow-hidden">
+                    <div class="mt-2">
+                        <div class="owl-carousel owl-theme new-arrivals-product">
+                            @foreach ($allProducts as $product)
+                            @include('web-views.partials._product-card-2', [
+                            'product' => $product,
+                            'decimal_point_settings' => $decimalPointSettings,
+                            ])
+                            @endforeach
+                        </div>
+
+                        <!-- Grid View for Small Screens -->
+                        <div class="d-sm-none">
+                            <div class="row g-2">
+                                @foreach ($allProducts as $key => $product)
+                                @if ($key < 4)
+                                    <div class="col-6">
+                                    @include('web-views.partials._product-card-2', [
+                                    'product' => $product,
+                                    'decimal_point_settings' => $decimalPointSettings,
+                                    ])
                             </div>
+                            @endif
+                            @endforeach
                         </div>
-                    @else
-                        <div class="text-center mt-5 mb-5">
-                            <h1><strong>No products found <span class="text-primary">in this Category.</span></strong>
-                            </h1>
-                            <span>Please Check with another Category!</span>
-                        </div>
-                    @endif
+                    </div>
                 </div>
-            @endforeach
+            </div>
+            @else
+            <div class="text-center mt-5 mb-5">
+                <h1><strong>No products found <span class="text-primary">in this Category.</span></strong>
+                </h1>
+                <span>Please Check with another Category!</span>
+            </div>
+            @endif
         </div>
+        @endforeach
+    </div>
     </div>
 </section>
 

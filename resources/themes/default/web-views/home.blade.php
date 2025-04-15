@@ -161,7 +161,7 @@
                 <div class="container rtl mt-4">
                     <div class="text-center mt-5 mb-5" style="margin-bottom: 100px!important;">
                         <h1><strong>NEW <span class="text-primary">ARRIVALS</span></strong></h1>
-                        <span class="mb-5">Our latest offerings</span>
+                        <h3 class="mb-5">Our latest offerings</h3>
                     </div>
                 </div>
                 <div class="container rtl mb-3 overflow-hidden">
