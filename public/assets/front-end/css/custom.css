@@ -171,7 +171,7 @@ span.badge-accent:hover {
 }
 
 .custom-light-primary-color-20 {
-    background-color: var(--web-primary-20);
+    background-color: #000000!important;
 }
 
 .password-toggle-btn .custom-control-input:checked ~ .password-toggle-indicator {
